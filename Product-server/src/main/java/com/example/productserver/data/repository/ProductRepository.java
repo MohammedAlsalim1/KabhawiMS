@@ -1,0 +1,16 @@
+package com.example.productserver.data.repository;
+
+import com.example.productserver.data.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    Optional<Product> findById(Long aLong);
+    Optional<Product> findByBarcode(String barcode);
+    Optional<List<Product>> findByPrice(Integer price);
+    Optional<List<Product>> findByPriceBetween( Integer min, Integer max);
+}

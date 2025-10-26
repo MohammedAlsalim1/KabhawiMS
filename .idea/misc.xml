@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/AuthForge/pom.xml" />
         <option value="$PROJECT_DIR$/GateWay-server/pom.xml" />
         <option value="$PROJECT_DIR$/Discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/Product-server/pom.xml" />
       </list>
     </option>
   </component>
