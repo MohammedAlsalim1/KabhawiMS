@@ -11,7 +11,7 @@ import org.mapstruct.Mapper;
 public interface appMapper {
     ProductDto map (Product product);
     Product map (ProductDto productDto);
-    CategoryDto map (Category category);
+    CategoryDto map(Category category);
     Category map (CategoryDto categoryDto);
 
 }

@@ -3,7 +3,6 @@ package com.example.productserver.service;
 import com.example.productserver.data.dto.CategoryDto;
 import com.example.productserver.data.entity.Category;
 import com.example.productserver.data.repository.CategoryRepository;
-import com.example.productserver.data.repository.ProductRepository;
 import com.example.productserver.mapper.appMapper;
 import com.example.productserver.service.ex.AlreadyException;
 import com.example.productserver.service.ex.InvalidException;
@@ -11,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,16 +64,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategory(String name) {
-        return null;
+        return mapper.map(categoryRepository.findByName(name).orElseThrow(() -> new InvalidException("Category not found with name: " + name)));
     }
 
     @Override
     public List<CategoryDto> getCategories() {
-        return List.of();
+        return categoryRepository.findAll().stream().map(mapper::map).collect(Collectors.toList());
     }
 
     @Override
     public void deleteCategory(String name) {
+        Category category = categoryRepository.findByName(name)
+                .orElseThrow(() ->
+                        new InvalidException
+                                ("Category not found with name: " + name));
+        categoryRepository.delete(category);
+
 
     }
 }
