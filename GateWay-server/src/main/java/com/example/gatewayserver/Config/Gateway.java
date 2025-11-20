@@ -15,9 +15,15 @@ public class Gateway {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("authForge-route-signUp", Gateway::signUp)
-                .route("authForge-route-signIn", Gateway::signIn)
-                .route("authForge-route-parseToken", Gateway::parseToken)
+                // Auth Forge Routes
+                .route("authForge-signUp", Gateway::signUp)
+                .route("authForge-signIn", Gateway::signIn)
+                .route("authForge-parseToken", Gateway::parseToken)
+
+                // Product Server Routes
+                .route("product-server", Gateway::productServer)
+                // cart Server Routes
+                .route("cart-server", Gateway::cartServer)
                 .build();
     }
 
@@ -35,13 +41,11 @@ public class Gateway {
     }
     private static Buildable<Route> parseToken(PredicateSpec predicateSpec) {
         return predicateSpec.path("/parse-token")
-                .filters(f -> f.rewritePath("/parse-token", "/parse-token"))
                 .uri("lb://auth-forge");
     }
 
     private static Buildable<Route> signIn(PredicateSpec predicateSpec) {
         return predicateSpec.path("/login")
-                .filters(f -> f.rewritePath("/login", "/login"))
                 .uri("lb://auth-forge");
     }
 
@@ -50,6 +54,12 @@ public class Gateway {
                 .filters(f -> f.rewritePath("/signUp", "/sign-up"))
                 .uri("lb://auth-forge");
     }
-
-
+    private static Buildable<Route> productServer(PredicateSpec predicateSpec) {
+        return predicateSpec.path("/api/**")
+                .uri("lb://product-server");
+    }
+    private static Buildable<Route> cartServer(PredicateSpec predicateSpec) {
+        return predicateSpec.path("/api/**")
+                .uri("lb://cart-server");
+    }
 }

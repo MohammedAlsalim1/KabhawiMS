@@ -1,6 +1,7 @@
 package com.example.productserver.service;
 
 import com.example.productserver.data.dto.ProductDto;
+import com.example.productserver.data.entity.Category;
 import com.example.productserver.data.entity.Product;
 import com.example.productserver.data.repository.CategoryRepository;
 import com.example.productserver.data.repository.ProductRepository;
@@ -22,14 +23,27 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public ProductDto save(ProductDto product) {
-        if (product == null) {
+    public ProductDto save(ProductDto productDto) {
+        if (productDto == null) {
             throw new InvalidException("Product is null");
         }
-        if (productRepository.findByBarcode(product.getBarcode()).isPresent()) {
+        if (productRepository.findByBarcode(productDto.getBarcode()).isPresent()) {
             throw new AlreadyException("Barcode already exists");
         }
-        return mapper.map(productRepository.save(mapper.map(product)));
+        Category category = categoryRepository.findById(productDto.getCategory_id())
+                .orElseThrow(() -> new NotExistException("Category not found"));
+
+        // 3. Map DTO to entity
+        Product product = mapper.map(productDto);
+
+        // 4. Set the category on the product
+        product.setCategory(category);
+
+        // 5. Save the product
+        Product savedProduct = productRepository.save(product);
+
+        // 6. Return mapped DTO
+        return mapper.map(savedProduct);
     }
 
     @Override
