@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cart")
 public class CartController {
 
     private final CartService cartService;
@@ -28,52 +28,61 @@ public class CartController {
         return login;
     }
 
-    // الحصول على السلة أو إنشاء واحدة جديدة
     @GetMapping("/cart")
     public ResponseEntity<CartDto> getOrCreateCart(
             @RequestParam(required = false) String cartId,
             @RequestParam(required = false) Long userId
     ) {
-        CartDto cart = cartService.getOrCreateCart(cartId, userId);
-        return ResponseEntity.ok(cart);
+
+        // إذا المستخدم مسجّل دخول → تجاهل cartId واستخدم userId فقط
+        if (userId != null) {
+            return ResponseEntity.ok(cartService.getOrCreateCart(null, userId));
+        }
+
+        // Guest → يجب أن يكون معه cartId
+        if (cartId == null) {
+            // إذا لا يوجد cartId نُنشئ واحد جديد
+            CartDto newGuestCart = cartService.getOrCreateCart(null, null);
+            return ResponseEntity.ok(newGuestCart);
+        }
+
+        // إذا guest ومعه cartId → نرجع السلة
+        return ResponseEntity.ok(cartService.getOrCreateCart(cartId, null));
     }
 
-    // إضافة عنصر إلى السلة
-    @PostMapping("/add")
+
+    @PostMapping("/addToCart")
     public ResponseEntity<CartDto> addItemToCart(
             @RequestParam(required = false) String cartId,
             @RequestParam(required = false) Long userId,
-            @RequestParam Long productId,
+            @RequestParam String productBarcode,
             @RequestParam int quantity
     ) {
-        CartDto cart = cartService.addItemToCart(cartId, userId, productId, quantity);
+        CartDto cart = cartService.addItemToCart(cartId, userId, productBarcode, quantity);
         return ResponseEntity.ok(cart);
     }
 
-    // إزالة عنصر من السلة
-    @DeleteMapping("/remove")
+    @DeleteMapping("/removeFromTheCart")
     public ResponseEntity<CartDto> removeItemFromCart(
             @RequestParam(required = false) String cartId,
             @RequestParam(required = false) Long userId,
-            @RequestParam Long productId
+            @RequestParam String productBarcode
     ) {
-        CartDto cart = cartService.removeItemFromCart(cartId, userId, productId);
+        CartDto cart = cartService.removeItemFromCart(cartId, userId, productBarcode);
         return ResponseEntity.ok(cart);
     }
 
-    // تحديث كمية عنصر في السلة
-    @PutMapping("/update")
+    @PutMapping("/updateTheCart")
     public ResponseEntity<CartDto> updateCart(
             @RequestParam(required = false) String cartId,
             @RequestParam(required = false) Long userId,
-            @RequestParam Long productId,
+            @RequestParam String productBarcode,
             @RequestParam int quantity
     ) {
-        CartDto cart = cartService.updateCart(cartId, userId, productId, quantity);
+        CartDto cart = cartService.updateCart(cartId, userId,productBarcode , quantity);
         return ResponseEntity.ok(cart);
     }
 
-    // دمج سلة الضيف مع المستخدم عند تسجيل الدخول
     @PostMapping("/merge")
     public ResponseEntity<Void> mergeGuestCart(
             @RequestParam String guestCartId,

@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
         if (productRepository.findByBarcode(productDto.getBarcode()).isPresent()) {
             throw new AlreadyException("Barcode already exists");
         }
-        Category category = categoryRepository.findById(productDto.getCategory_id())
+        Category category = categoryRepository.findById(productDto.getCategoryId())
                 .orElseThrow(() -> new NotExistException("Category not found"));
 
         // 3. Map DTO to entity

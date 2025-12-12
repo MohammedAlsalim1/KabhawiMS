@@ -10,6 +10,5 @@ public class CartDto {
     private Long id;
     private String cartId;  // UUID للزائر
     private Long userId;    // معرف المستخدم
-
     private List<CartItemDto> items = new ArrayList<>();
 }

@@ -55,11 +55,11 @@ public class Gateway {
                 .uri("lb://auth-forge");
     }
     private static Buildable<Route> productServer(PredicateSpec predicateSpec) {
-        return predicateSpec.path("/api/**")
+        return predicateSpec.path("/api/product/**")
                 .uri("lb://product-server");
     }
     private static Buildable<Route> cartServer(PredicateSpec predicateSpec) {
-        return predicateSpec.path("/api/**")
+        return predicateSpec.path("/api/cart/**")
                 .uri("lb://cart-server");
     }
 }

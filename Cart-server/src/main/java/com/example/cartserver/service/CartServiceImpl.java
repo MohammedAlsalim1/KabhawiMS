@@ -39,20 +39,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartDto addItemToCart(String cartId, Long userId, Long productId, int quantity) {
+    public CartDto addItemToCart(String cartId, Long userId, String productBarcode, int quantity) {
         Cart cart = (userId != null)
                 ? cartRepository.findByUserId(userId).orElse(Cart.builder().userId(userId).build())
                 : cartRepository.findByCartId(cartId).orElse(Cart.builder().cartId(UUID.randomUUID().toString()).build());
 
         Optional<CartItem> existingItem = cart.getItems().stream()
-                .filter(i -> i.getProductId().equals(productId))
+                .filter(i -> i.getBarcode().equals(productBarcode))
                 .findFirst();
 
         if (existingItem.isPresent()) {
             existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
         } else {
             CartItem newItem = CartItem.builder()
-                    .productId(productId)
+                    .barcode(productBarcode)
                     .quantity(quantity)
                     .cart(cart)
                     .build();
@@ -65,14 +65,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartDto removeItemFromCart(String cartId, Long userId, Long productId) {
+    public CartDto removeItemFromCart(String cartId, Long userId, String productBarcode) {
         Cart cart = (userId != null)
                 ? cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotExistException("Cart not found for userId: " + userId))
                 : cartRepository.findByCartId(cartId)
                 .orElseThrow(() -> new NotExistException("Cart not found for cartId: " + cartId));
 
-        cart.getItems().removeIf(item -> item.getProductId().equals(productId));
+        cart.getItems().removeIf(item -> item.getBarcode().equals(productBarcode));
 
         cart = cartRepository.save(cart);
         return mapper.map(cart);
@@ -90,13 +90,13 @@ public class CartServiceImpl implements CartService {
 
         for (CartItem guestItem : guestCart.getItems()) {
             Optional<CartItem> existing = userCart.getItems().stream()
-                    .filter(i -> i.getProductId().equals(guestItem.getProductId()))
+                    .filter(i -> i.getBarcode().equals(guestItem.getBarcode()))
                     .findFirst();
             if (existing.isPresent()) {
                 existing.get().setQuantity(existing.get().getQuantity() + guestItem.getQuantity());
             } else {
                 CartItem newItem = CartItem.builder()
-                        .productId(guestItem.getProductId())
+                        .barcode(guestItem.getBarcode())
                         .quantity(guestItem.getQuantity())
                         .cart(userCart)
                         .build();
@@ -109,7 +109,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartDto updateCart(String cartId, Long userId, Long productId, int newQuantity) {
+    public CartDto updateCart(String cartId, Long userId, String productBarcode, int newQuantity) {
         // جلب السلة سواء كانت للمستخدم المسجل أو ضيف
         Cart cart = (userId != null)
                 ? cartRepository.findByUserId(userId)
@@ -119,9 +119,9 @@ public class CartServiceImpl implements CartService {
 
         // البحث عن العنصر المطلوب تحديثه
         CartItem item = cart.getItems().stream()
-                .filter(i -> i.getProductId().equals(productId))
+                .filter(i -> i.getBarcode().equals(productBarcode))
                 .findFirst()
-                .orElseThrow(() -> new NotExistException("Product not found in cart: " + productId));
+                .orElseThrow(() -> new NotExistException("Product not found in cart: " + productBarcode));
 
         // تحديث الكمية
         item.setQuantity(newQuantity);

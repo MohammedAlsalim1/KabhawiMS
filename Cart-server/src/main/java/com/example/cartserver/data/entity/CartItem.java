@@ -15,7 +15,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private Long productId;
+    private String barcode;
     @Column(nullable = false)
     private int quantity;
 
