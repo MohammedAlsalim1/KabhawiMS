@@ -2,7 +2,6 @@ package com.example.cartserver.controller;
 
 import com.example.cartserver.data.dto.CartDto;
 import com.example.cartserver.data.dto.CartItemDto;
-import com.example.cartserver.data.entity.Login;
 import com.example.cartserver.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -33,11 +32,13 @@ public class CartController {
     // ✅ إضافة منتج للسلة (باستخدام BARCODE)
     @PostMapping("/add")
     public ResponseEntity<CartDto> addToCart(
+            @RequestHeader String cartId,
+            @RequestHeader(required = false) Long userId,
             @RequestBody CartItemDto cartItemDto
     ) {
         CartDto cart = cartService.addItemToCart(
-                cartItemDto.getCartId(),
-                cartItemDto.getUserId(),
+                cartId,
+                userId,
                 cartItemDto.getBarcode(),
                 cartItemDto.getQuantity()
         );
@@ -47,11 +48,13 @@ public class CartController {
     // ✅ تحديث كمية منتج
     @PutMapping("/update")
     public ResponseEntity<CartDto> updateCart(
+            @RequestHeader String cartId,
+            @RequestHeader(required = false) Long userId,
             @RequestBody CartItemDto cartItemDto
     ) {
         CartDto cart = cartService.updateCart(
-                cartItemDto.getCartId(),
-                cartItemDto.getUserId(),
+                cartId,
+                userId,
                 cartItemDto.getBarcode(),
                 cartItemDto.getQuantity()
         );
@@ -61,11 +64,13 @@ public class CartController {
     // ✅ حذف منتج من السلة
     @DeleteMapping("/remove")
     public ResponseEntity<CartDto> removeFromCart(
+            @RequestHeader String cartId,
+            @RequestHeader(required = false) Long userId,
             @RequestBody CartItemDto cartItemDto
     ) {
         CartDto cart = cartService.removeItemFromCart(
-                cartItemDto.getCartId(),
-                cartItemDto.getUserId(),
+                cartId,
+                userId,
                 cartItemDto.getBarcode()
         );
         return ResponseEntity.ok(cart);
