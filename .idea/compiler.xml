@@ -11,17 +11,25 @@
         <module name="GateWay-server" />
         <module name="Discovery-server" />
       </profile>
-      <profile name="Annotation profile for Cart-server" enabled="true">
+      <profile name="Annotation profile for Product-server" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.3.Final/mapstruct-processor-1.5.3.Final.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.3.Final/mapstruct-1.5.3.Final.jar" />
         </processorPath>
-        <module name="Cart-server" />
         <module name="Product-server" />
+        <module name="Cart-server" />
+      </profile>
+      <profile name="Annotation profile for Order-server" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="Order-server" />
       </profile>
     </annotationProcessing>
   </component>
@@ -31,6 +39,7 @@
       <module name="Cart-server" options="-parameters" />
       <module name="Discovery-server" options="-parameters" />
       <module name="GateWay-server" options="-parameters" />
+      <module name="Order-server" options="-parameters" />
       <module name="Product-server" options="-parameters" />
     </option>
   </component>
