@@ -85,4 +85,12 @@ public class CartController {
         cartService.mergeGuestCartToUser(guestCartId, userId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/clear")
+    public ResponseEntity<CartDto> clearCart( @RequestHeader String cartId,
+                                              @RequestHeader(required = false) Long userId) {
+        CartDto cartDto = cartService.clearCart(cartId, userId);
+        return ResponseEntity.ok(cartDto);
+
+    }
 }

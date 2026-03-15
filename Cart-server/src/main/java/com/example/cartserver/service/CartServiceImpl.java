@@ -131,4 +131,19 @@ public class CartServiceImpl implements CartService {
 
         return mapper.map(cart);
     }
+
+    @Override
+    public CartDto clearCart(String cartId,Long userId) {
+        Cart cart = (userId != null)
+                ? cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotExistException("Cart not found for userId: " + userId))
+                : cartRepository.findByCartId(cartId)
+                .orElseThrow(() -> new NotExistException("Cart not found for cartId: " + cartId));
+
+        cart.getItems().clear();
+
+        cartRepository.save(cart);
+
+        return mapper.map(cart);
+    }
 }
