@@ -10,6 +10,8 @@ public class OrderDto {
     private Long id;
     private Long userId;
     private String cartId;
+    private String address;
+    private String phoneNumber;
     private int totalAmount;
     private OrderStatus status;
     private List<OrderItemDto> items;

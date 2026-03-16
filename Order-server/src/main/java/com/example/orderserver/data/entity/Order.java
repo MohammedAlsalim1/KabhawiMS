@@ -3,7 +3,6 @@ package com.example.orderserver.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,9 @@ public class Order {
     private Long userId;
 
     private String cartId;
+
+    private String address;      // عنوان التوصيل
+    private String phoneNumber;
 
     private double totalAmount;
 
