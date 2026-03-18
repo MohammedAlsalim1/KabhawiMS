@@ -1,18 +1,19 @@
 package com.example.orderserver.controller.advice;
 
-import com.example.cartserver.controller.CartController;
-import com.example.cartserver.service.ex.AlreadyException;
-import com.example.cartserver.service.ex.EmptyException;
-import com.example.cartserver.service.ex.InvalidException;
-import com.example.cartserver.service.ex.NotExistException;
+
+import com.example.orderserver.controller.OrderController;
+import com.example.orderserver.service.ex.AlreadyException;
+import com.example.orderserver.service.ex.EmptyException;
+import com.example.orderserver.service.ex.InvalidException;
+import com.example.orderserver.service.ex.NotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackageClasses = CartController.class)
-public class CartControllerAdvice {
+@RestControllerAdvice(basePackageClasses = OrderController.class)
+public class OrderControllerAdvice {
     @ExceptionHandler(EmptyException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ProblemDetail handleEmpty(EmptyException ex) {
