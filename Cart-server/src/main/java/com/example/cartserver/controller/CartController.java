@@ -6,7 +6,6 @@ import com.example.cartserver.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 
 @RequiredArgsConstructor
@@ -15,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 public class CartController {
 
     private final CartService cartService;
-    private final RestTemplate restTemplate;
 
     // ✅ إنشاء أو جلب السلة (Guest أو User)
     @PostMapping("/get-or-create")

@@ -1,10 +1,8 @@
 package com.example.cartserver.service;
 
 import com.example.cartserver.data.dto.CartDto;
-import com.example.cartserver.data.dto.CartItemDto;
 import com.example.cartserver.data.entity.Cart;
 import com.example.cartserver.data.entity.CartItem;
-import com.example.cartserver.data.repository.CartItemRepository;
 import com.example.cartserver.data.repository.CartRepository;
 import com.example.cartserver.mapper.appMapper;
 import com.example.cartserver.service.ex.NotExistException;
@@ -14,13 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
     private final appMapper mapper;
 
     @Override
@@ -83,7 +79,6 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void mergeGuestCartToUser(String guestCartId, Long userId) {
         Cart guestCart = cartRepository.findByCartId(guestCartId).orElseThrow(() -> new NotExistException("Cart not found for cartId: " + guestCartId));
-        if (guestCart == null) return;
 
         Cart userCart = cartRepository.findByUserId(userId)
                 .orElse(Cart.builder().userId(userId).build());

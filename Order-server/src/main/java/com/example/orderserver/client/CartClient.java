@@ -1,23 +1,22 @@
 package com.example.orderserver.client;
 
-import com.example.cartserver.data.dto.CartDto;
+import com.example.orderserver.data.dto.CartDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "cart-service")
+@FeignClient(name = "cart-server")
 public interface CartClient {
 
-    @GetMapping("/api/cart/get-or-create")
+    @GetMapping("/api/cart")
     CartDto getCart(
-            @RequestHeader("X-USER-ID") Long userId,
-            @RequestHeader("X-CART-ID") String cartId
+            @RequestHeader(value = "X-USER-ID", required = false) Long userId,
+            @RequestHeader(value = "X-CART-ID", required = false) String cartId
     );
 
     @DeleteMapping("/api/cart/clear")
-    void clearCart(
-            @RequestHeader("X-USER-ID") Long userId,
-            @RequestHeader("X-CART-ID") String cartId
+    CartDto clearCart(
+            @RequestHeader(value = "X-USER-ID", required = false) Long userId,
+            @RequestHeader(value = "X-CART-ID", required = false) String cartId
     );
+
 }
