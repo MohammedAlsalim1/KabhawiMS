@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
     // إنشاء طلب
-    @PostMapping
+    @PostMapping("/checkout")
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
         OrderDto created = orderService.createOrder(orderDto);
         return ResponseEntity.ok(created);
@@ -31,8 +31,8 @@ public class OrderController {
     }
 
     // جلب جميع الطلبات لمستخدم معين
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderDto>> getOrdersByUserId(@PathVariable Long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<List<OrderDto>> getOrdersByUserId(@RequestHeader Long userId) {
         List<OrderDto> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(orders);
     }

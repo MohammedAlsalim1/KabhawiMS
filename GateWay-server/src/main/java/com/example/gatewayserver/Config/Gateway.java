@@ -24,8 +24,11 @@ public class Gateway {
                 .route("product-server", Gateway::productServer)
                 // cart Server Routes
                 .route("cart-server", Gateway::cartServer)
+                .route("order-server",Gateway::orderServer)
                 .build();
     }
+
+
 
     @Bean
     public CorsWebFilter corsFilter() {
@@ -61,5 +64,10 @@ public class Gateway {
     private static Buildable<Route> cartServer(PredicateSpec predicateSpec) {
         return predicateSpec.path("/api/cart/**")
                 .uri("lb://cart-server");
+    }
+
+    private static Buildable<Route> orderServer(PredicateSpec predicateSpec) {
+        return predicateSpec.path("/api/order/**")
+                .uri("lb://order-server");
     }
 }
