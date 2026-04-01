@@ -6,6 +6,8 @@
         <set>
           <option value="X-USER-ID" />
           <option value="X-CART-ID" />
+          <option value="cartId" />
+          <option value="userId" />
         </set>
       </option>
     </inspection_tool>

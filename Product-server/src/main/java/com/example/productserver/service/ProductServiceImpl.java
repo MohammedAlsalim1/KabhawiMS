@@ -59,6 +59,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDto updateProduct(String barcode, ProductDto productDto) {
+        if (productDto == null) {
+            throw new InvalidException("Product is null");
+        }
+       Product product=productRepository.findByBarcode(barcode)
+                .orElseThrow(() -> new NotExistException("Product does not exist"));
+        product.setBarcode(productDto.getBarcode());
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
+        product.setDescription(productDto.getDescription());
+        product.setImageUrl(productDto.getImageUrl());
+        product.setMaterials(productDto.getMaterials());
+        product.setWeight(productDto.getWeight());
+        productRepository.save(product);
+        return mapper.map(product);
+
+
+
+    }
+
+
+    @Override
     public List<ProductDto> getAllProducts() {
         return productRepository.findAll()
                 .stream()
@@ -69,7 +92,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProductsByCategory(String categoryName) {
-        return productRepository.findByCategoryName(categoryName).get()
+        List<Product> products = productRepository.findByCategoryName(categoryName.toUpperCase().replace("-"," ")).get();
+        return products
                 .stream()
                 .map(mapper::map)
                 .collect(Collectors.toList());

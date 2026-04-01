@@ -31,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         // Map DTO → Entity
+        categoryDto.getName().toUpperCase();
         Category categoryEntity = mapper.map(categoryDto);
 
         // Save entity
@@ -51,7 +52,9 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new InvalidException("Category not found with name: " + name));
 
         // Update fields
-        existingCategory.setName(categoryDto.getName());
+        if (categoryDto.getName()!=null)
+        existingCategory.setName(categoryDto.getName().toUpperCase());
+        if (categoryDto.getImageUrl()!=null)
         existingCategory.setImageUrl(categoryDto.getImageUrl());
 
         // Save the updated category
