@@ -18,6 +18,10 @@ public class CartItem {
     private String barcode;
     @Column(nullable = false)
     private int quantity;
+    @Column(nullable = false)
+    private double price;
+    @Column(nullable = false)
+    private double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")

@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "product-server")
 public interface ProductClient {
 
-    @GetMapping("/api/getProduct/{barcode}")
-    productDto getProduct(@PathVariable String barcode);
+    @GetMapping("/api/product/getProduct/{barcode}")
+    productDto getProduct(@PathVariable("barcode") String barcode);
 }

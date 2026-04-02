@@ -1,4 +1,9 @@
 package com.example.cartserver.data.dto;
 
-public record productDto(String barcode) {
+import lombok.Data;
+
+@Data
+public class productDto {
+    private String barcode;
+    private double price;
 }

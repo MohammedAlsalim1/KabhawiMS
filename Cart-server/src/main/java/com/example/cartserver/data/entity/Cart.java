@@ -20,8 +20,10 @@ public class Cart {
     @Column(nullable = true)
     private String cartId;
     @Column(nullable = true)
-    private Long userId;
-
+    private String userId;
+    @Column(nullable = false)
+    private double totalPrice;
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
+
 }

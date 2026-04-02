@@ -9,6 +9,8 @@ import java.util.List;
 public class CartDto {
     private Long id;
     private String cartId;  // UUID للزائر
-    private Long userId;    // معرف المستخدم
+    private String userId;    // معرف المستخدم
+    private double totalPrice;
     private List<CartItemDto> items = new ArrayList<>();
+
 }
