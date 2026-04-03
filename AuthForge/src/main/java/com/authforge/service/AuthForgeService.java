@@ -9,5 +9,5 @@ public interface AuthForgeService {
 
     UserDto parseTokenAndGetUser(String token);
 
-    boolean signUp(String username, String password);
+    boolean signUp(String username, String password,String firstName,String lastName,String phoneNumber);
 }

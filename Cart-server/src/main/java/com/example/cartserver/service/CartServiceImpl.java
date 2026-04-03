@@ -22,9 +22,18 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final appMapper mapper;
     private final ProductClient productClient;
+    private final UserClient userClient;
+
+    private String parseToken(String token) {
+        if (token == null || token.isBlank()) {
+            return null;
+        }
+        return userClient.getUser(token).getUuid();
+    }
 
     @Override
-    public CartDto getOrCreateCart(String cartId, String userId) {
+    public CartDto getOrCreateCart(String cartId, String token) {
+        String userId = parseToken(token);
         Cart cart;
         if (userId != null) {
             cart = cartRepository.findByUserId(userId)
@@ -39,7 +48,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartDto addItemToCart(String cartId, String userId, String productBarcode, int quantity) {
+    public CartDto addItemToCart(String cartId, String token, String productBarcode, int quantity) {
+        String userId = parseToken(token);
+
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be greater than zero");
         }
@@ -74,13 +85,14 @@ public class CartServiceImpl implements CartService {
 
         recalculateCartTotal(cart);
         cart = cartRepository.save(cart);
-        CartDto map = mapper.map(cart);
-        return map;
+        return mapper.map(cart);
     }
 
     @Override
     @Transactional
-    public CartDto removeItemFromCart(String cartId, String userId, String productBarcode) {
+    public CartDto removeItemFromCart(String cartId, String token, String productBarcode) {
+        String userId = parseToken(token);
+
         Cart cart = (userId != null)
                 ? cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotExistException("Cart not found for userId: " + userId))
@@ -101,7 +113,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void mergeGuestCartToUser(String guestCartId, String userId) {
+    public CartDto mergeGuestCartToUser(String guestCartId, String token) {
+        String userId = parseToken(token);
+
+        if (userId == null) {
+            throw new IllegalArgumentException("Token is required for merging carts");
+        }
+
         Cart guestCart = cartRepository.findByCartId(guestCartId)
                 .orElseThrow(() -> new NotExistException("Cart not found for cartId: " + guestCartId));
 
@@ -131,13 +149,16 @@ public class CartServiceImpl implements CartService {
         }
 
         recalculateCartTotal(userCart);
-        cartRepository.save(userCart);
+        userCart = cartRepository.save(userCart);
         cartRepository.delete(guestCart);
-    }
 
+        return mapper.map(userCart);
+    }
     @Override
     @Transactional
-    public CartDto updateCart(String cartId, String userId, String productBarcode, int newQuantity) {
+    public CartDto updateCart(String cartId, String token, String productBarcode, int newQuantity) {
+        String userId = parseToken(token);
+
         if (newQuantity <= 0) {
             throw new IllegalArgumentException("Quantity must be greater than zero");
         }
@@ -164,7 +185,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartDto clearCart(String cartId, String userId) {
+    public CartDto clearCart(String cartId, String token) {
+        String userId = parseToken(token);
+
         Cart cart = (userId != null)
                 ? cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotExistException("Cart not found for userId: " + userId))

@@ -19,7 +19,7 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody SignUpRequest signUpRequest) {
-        if (authForgeService.signUp(signUpRequest.getUsername(), signUpRequest.getPassword())) {
+        if (authForgeService.signUp(signUpRequest.getUsername(), signUpRequest.getPassword(),signUpRequest.getFirstName() , signUpRequest.getLastName(), signUpRequest.getPhoneNumber() )) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();

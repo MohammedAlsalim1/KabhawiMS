@@ -8,6 +8,6 @@ public interface CartService {
     CartDto removeItemFromCart(String cartId, String userId, String productBarcode);
     CartDto updateCart(String cartId, String userId, String productBarcode, int quantity);
     CartDto clearCart(String cartId, String userId);
-    void mergeGuestCartToUser(String guestCartId, String userId);
+    CartDto mergeGuestCartToUser(String guestCartId, String userId);
 }
 

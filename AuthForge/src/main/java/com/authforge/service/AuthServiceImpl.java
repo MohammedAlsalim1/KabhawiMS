@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthForgeService {
 
         User user = optUser.get();
 
-        return generateJwtToken(user.getUsername(), user.getUuid());
+        return generateJwtToken(user.getUsername(),user.getFirstName(),user.getLastName(),user.getPhoneNumber(), user.getUuid());
     }
 
     @Override
@@ -59,13 +59,16 @@ public class AuthServiceImpl implements AuthForgeService {
 
 
         String username = claims.get("username", String.class);
+        String firstName = claims.get("firstName", String.class);
+        String lastName = claims.get("lastName", String.class);
+        String phoneNumber = claims.get("phoneNumber", String.class);
         String uuidStr = claims.get("uuid", String.class);
 
-        return new UserDto(username, UUID.fromString(uuidStr));
+        return new UserDto(username,firstName,lastName,phoneNumber, UUID.fromString(uuidStr));
     }
 
     @Override
-    public boolean signUp(String username, String password) {
+    public boolean signUp(String username, String password,String firstName,String lastName,String phoneNumber) {
 
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isPresent()) {
@@ -74,6 +77,9 @@ public class AuthServiceImpl implements AuthForgeService {
 
         User newUser = User.builder()
                 .username(username)
+                .firstName(firstName)
+                .lastName(lastName)
+                .phoneNumber(phoneNumber)
                 .bcryptPassword(passwordEncoder.encode(password))
                 .build();
 
@@ -81,10 +87,13 @@ public class AuthServiceImpl implements AuthForgeService {
         return true;
     }
 
-    private String generateJwtToken(String username, UUID uuid) {
+    private String generateJwtToken(String username,String firstName,String lastName,String phoneNumber, UUID uuid) {
         Date expirationDate = new Date(System.currentTimeMillis() + jwtExpirationMillis);
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);
+        claims.put("firstName", firstName);
+        claims.put("lastName", lastName);
+        claims.put("phoneNumber", phoneNumber);
         claims.put("uuid", uuid);
 
         return Jwts.builder()
