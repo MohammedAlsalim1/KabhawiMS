@@ -20,6 +20,8 @@ public class OrderItem {
 
     private double price;
 
+    private double totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

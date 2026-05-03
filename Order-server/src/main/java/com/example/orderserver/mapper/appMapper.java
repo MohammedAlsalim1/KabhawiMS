@@ -16,7 +16,6 @@ public interface appMapper {
     OrderDto map(Order order);
     Order map(OrderDto orderDto);
     OrderItemDto map(OrderItem orderItem);
-    OrderItem map(OrderItemDto orderItemDto);
     default List<OrderItemDto> map(List<OrderItem> items) {
         if (items == null) {
             return new ArrayList<>();

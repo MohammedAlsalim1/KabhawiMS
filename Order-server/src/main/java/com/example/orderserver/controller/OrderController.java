@@ -18,8 +18,8 @@ public class OrderController {
 
     // إنشاء طلب
     @PostMapping("/checkout")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
-        OrderDto created = orderService.createOrder(orderDto);
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto,@RequestHeader String authorization, @RequestHeader String cartId) {
+        OrderDto created = orderService.createOrder(orderDto,authorization,cartId);
         return ResponseEntity.ok(created);
     }
 
@@ -28,13 +28,6 @@ public class OrderController {
     public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
         OrderDto order = orderService.getOrderById(id);
         return ResponseEntity.ok(order);
-    }
-
-    // جلب جميع الطلبات لمستخدم معين
-    @GetMapping("/user")
-    public ResponseEntity<List<OrderDto>> getOrdersByUserId(@RequestHeader Long userId) {
-        List<OrderDto> orders = orderService.getOrdersByUserId(userId);
-        return ResponseEntity.ok(orders);
     }
 
     // جلب الطلبات حسب الحالة
@@ -48,6 +41,11 @@ public class OrderController {
     @GetMapping("/phone/{phoneNumber}")
     public ResponseEntity<List<OrderDto>> getOrdersByPhoneNumber(@PathVariable String phoneNumber) {
         List<OrderDto> orders = orderService.getOrdersByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(orders);
+    }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<List<OrderDto>> getOrdersByEmail(@PathVariable String email) {
+        List<OrderDto> orders = orderService.getOrdersByEmail(email);
         return ResponseEntity.ok(orders);
     }
 

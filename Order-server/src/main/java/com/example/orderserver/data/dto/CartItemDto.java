@@ -7,5 +7,7 @@ public class CartItemDto {
 
     private String barcode;
     private int quantity;
+    private double price;
+    private double totalPrice;
 
 }

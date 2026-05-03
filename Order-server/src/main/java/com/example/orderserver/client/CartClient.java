@@ -9,14 +9,15 @@ public interface CartClient {
 
     @PostMapping ("/get-or-create")
     CartDto getCart(
-            @RequestHeader(value = "X-USER-ID", required = false) Long userId,
-            @RequestHeader(value = "X-CART-ID", required = false) String cartId
+
+            @RequestHeader(value = "cartId", required = false) String cartId,
+            @RequestHeader(value = "Authorization", required = false) String authorization
     );
 
     @GetMapping("/clear")
     CartDto clearCart(
-            @RequestHeader(value = "X-USER-ID", required = false) Long userId,
-            @RequestHeader(value = "X-CART-ID", required = false) String cartId
+            @RequestHeader(value = "cartId", required = false) String cartId,
+            @RequestHeader(value = "Authorization", required = false) String authorization
     );
 
 }
