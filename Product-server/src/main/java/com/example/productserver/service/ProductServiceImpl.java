@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProductsByCategory(String categoryName) {
-        List<Product> products = productRepository.findByCategoryName(categoryName.toUpperCase().replace("-"," ")).get();
+        List<Product> products = productRepository.findByCategoryName(categoryName.replace("-", " ")).get();
         return products
                 .stream()
                 .map(mapper::map)

@@ -24,8 +24,8 @@ public class OrderController {
     }
 
     // جلب طلب حسب الـ ID
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
+    @GetMapping("/trackbyOrderNumber")
+    public ResponseEntity<OrderDto> getOrderById(@RequestParam Long id) {
         OrderDto order = orderService.getOrderById(id);
         return ResponseEntity.ok(order);
     }
@@ -38,17 +38,17 @@ public class OrderController {
     }
 
     // جلب الطلبات حسب رقم الهاتف
-    @GetMapping("/phone/{phoneNumber}")
-    public ResponseEntity<List<OrderDto>> getOrdersByPhoneNumber(@PathVariable String phoneNumber) {
+    @GetMapping("/trackByPhoneNumber")
+    public ResponseEntity<List<OrderDto>> getOrdersByPhoneNumber(@RequestParam String phoneNumber) {
         List<OrderDto> orders = orderService.getOrdersByPhoneNumber(phoneNumber);
         return ResponseEntity.ok(orders);
     }
-    @GetMapping("/email/{email}")
-    public ResponseEntity<List<OrderDto>> getOrdersByEmail(@PathVariable String email) {
+
+    @GetMapping("/trackByEmail")
+    public ResponseEntity<List<OrderDto>> getOrdersByEmail(@RequestParam String email) {
         List<OrderDto> orders = orderService.getOrdersByEmail(email);
         return ResponseEntity.ok(orders);
     }
-
     // تحديث حالة الطلب
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderDto> updateOrderStatus(

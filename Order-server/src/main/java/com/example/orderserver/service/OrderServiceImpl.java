@@ -73,7 +73,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getOrdersByPhoneNumber(String phoneNumber) {
-        return orderRepository.findByPhoneNumber(phoneNumber)
+        List<Order> byPhoneNumber = orderRepository.findByPhoneNumber(phoneNumber);
+        return byPhoneNumber
                 .stream()
                 .map(mapper::map)
                 .collect(Collectors.toList());
