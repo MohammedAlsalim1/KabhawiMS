@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+
+  discovery-server:
+    build: ./Discovery-server
+    ports:
+      - "8761:8761"
+    restart: always
+
+
+  gateway-server:
+    build: ./GateWay-server
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_URL=http://discovery-server:8761/eureka/
+    depends_on:
+      - discovery-server
+    restart: always
+
+
+  product-server:
+    build: ./Product-server
+    ports:
+      - "9090:9090"
+    environment:
+      - DB_URL=jdbc:postgresql://dpg-d7sgnsjrjlhs73btvtg0-a.frankfurt-postgres.render.com/products_qz5s?sslmode=require
+      - DB_USER=products_qz5s_user
+      - DB_PASS=VflDRPh1fLhMoAhKaDvGsBrLgIh0Ij9X
+      - EUREKA_URL=http://discovery-server:8761/eureka/
+    depends_on:
+      - discovery-server
+    restart: always
+
+
+  order-db:
+    image: postgres:16
+    container_name: order-db
+    restart: always
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5434:5432"
+
+
+  order-server:
+    build: ./Order-server
+    container_name: order-server
+    ports:
+      - "9091:9091"
+    environment:
+      - DB_URL=jdbc:postgresql://order-db:5432/orders
+      - DB_USER=postgres
+      - DB_PASS=1234
+      - EUREKA_URL=http://discovery-server:8761/eureka/
+    depends_on:
+      - order-db
+      - discovery-server
+    restart: always

@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: product-server
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://dpg-d7sgnsjrjlhs73btvtg0-a.frankfurt-postgres.render.com/products_qz5s?sslmode=require&sslfactory=org.postgresql.ssl.NonValidatingFactory}
+    username: ${DB_USER:products_qz5s_user}
+    password: ${DB_PASS:VflDRPh1fLhMoAhKaDvGsBrLgIh0Ij9X}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://discovery-server:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 9090
