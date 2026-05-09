@@ -6,14 +6,14 @@ services:
     build: ./Discovery-server
     container_name: discovery-server
     ports:
-      - "8761:8761" # يُفضل لاحقاً إغلاقه والوصول إليه عبر اسم نطاق محمي
+      - "8761:8761"
     restart: always
 
   gateway-server:
     build: ./GateWay-server
     container_name: gateway-server
     ports:
-      - "8080:8080" # هذه هي واجهتك الوحيدة للعالم الخارجي
+      - "8080:8080"
     environment:
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
@@ -28,7 +28,8 @@ services:
       POSTGRES_DB: products
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-    # تم حذف ports للحماية
+    volumes:
+      - product-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -38,7 +39,6 @@ services:
   product-server:
     build: ./Product-server
     container_name: product-server
-    # تم حذف ports، البوابة Gateway ستصل إليه داخلياً
     environment:
       - DB_URL=jdbc:postgresql://product-db:5432/products
       - DB_USER=postgres
@@ -59,6 +59,8 @@ services:
       POSTGRES_DB: orders
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
+    volumes:
+      - order-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -88,6 +90,8 @@ services:
       POSTGRES_DB: cart
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
+    volumes:
+      - cart-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -117,6 +121,8 @@ services:
       POSTGRES_DB: user
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
+    volumes:
+      - user-data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
@@ -132,7 +138,7 @@ services:
       - DB_PASS=1234
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
-      user-db: # تم تصحيح الخطأ هنا (كان cart-db)
+      user-db:
         condition: service_healthy
       discovery-server:
         condition: service_started
@@ -143,7 +149,7 @@ services:
     container_name: pgadmin
     restart: always
     ports:
-      - "5050:80" # تستطيع الدخول لـ pgAdmin عبر بورت 5050
+      - "5050:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin123
@@ -152,3 +158,10 @@ services:
       - order-db
       - cart-db
       - user-db
+
+# هنا يتم الإعلان عن الـ Volumes التي ستحفظ البيانات بشكل دائم
+volumes:
+  product-data:
+  order-data:
+  cart-data:
+  user-data:
