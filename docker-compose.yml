@@ -26,12 +26,12 @@ services:
     restart: always
     environment:
       POSTGRES_DB: products
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - product-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -41,8 +41,8 @@ services:
     container_name: product-server
     environment:
       - DB_URL=jdbc:postgresql://product-db:5432/products
-      - DB_USER=postgres
-      - DB_PASS=1234
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASSWORD}
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
       product-db:
@@ -57,12 +57,12 @@ services:
     restart: always
     environment:
       POSTGRES_DB: orders
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - order-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -72,8 +72,8 @@ services:
     container_name: order-server
     environment:
       - DB_URL=jdbc:postgresql://order-db:5432/orders
-      - DB_USER=postgres
-      - DB_PASS=1234
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASSWORD}
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
       order-db:
@@ -88,12 +88,12 @@ services:
     restart: always
     environment:
       POSTGRES_DB: cart
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - cart-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -103,8 +103,8 @@ services:
     container_name: cart-server
     environment:
       - DB_URL=jdbc:postgresql://cart-db:5432/cart
-      - DB_USER=postgres
-      - DB_PASS=1234
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASSWORD}
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
       cart-db:
@@ -119,12 +119,12 @@ services:
     restart: always
     environment:
       POSTGRES_DB: user
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - user-data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -134,8 +134,8 @@ services:
     container_name: auth-server
     environment:
       - DB_URL=jdbc:postgresql://user-db:5432/user
-      - DB_USER=postgres
-      - DB_PASS=1234
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASSWORD}
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
       user-db:
@@ -151,15 +151,15 @@ services:
     ports:
       - "5050:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     depends_on:
       - product-db
       - order-db
       - cart-db
       - user-db
 
-# هنا يتم الإعلان عن الـ Volumes التي ستحفظ البيانات بشكل دائم
+# تعريف المجلدات الدائمة للحفاظ على البيانات
 volumes:
   product-data:
   order-data:
