@@ -6,14 +6,14 @@ services:
     build: ./Discovery-server
     container_name: discovery-server
     ports:
-      - "8761:8761"
+      - "8761:8761" # يُفضل لاحقاً إغلاقه والوصول إليه عبر اسم نطاق محمي
     restart: always
 
   gateway-server:
     build: ./GateWay-server
     container_name: gateway-server
     ports:
-      - "8080:8080"
+      - "8080:8080" # هذه هي واجهتك الوحيدة للعالم الخارجي
     environment:
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
@@ -28,8 +28,7 @@ services:
       POSTGRES_DB: products
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-    ports:
-      - "5433:5432"
+    # تم حذف ports للحماية
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -39,8 +38,7 @@ services:
   product-server:
     build: ./Product-server
     container_name: product-server
-    ports:
-      - "9090:9090"
+    # تم حذف ports، البوابة Gateway ستصل إليه داخلياً
     environment:
       - DB_URL=jdbc:postgresql://product-db:5432/products
       - DB_USER=postgres
@@ -61,8 +59,6 @@ services:
       POSTGRES_DB: orders
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-    ports:
-      - "5434:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -72,8 +68,6 @@ services:
   order-server:
     build: ./Order-server
     container_name: order-server
-    ports:
-      - "9091:9091"
     environment:
       - DB_URL=jdbc:postgresql://order-db:5432/orders
       - DB_USER=postgres
@@ -94,8 +88,6 @@ services:
       POSTGRES_DB: cart
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-    ports:
-      - "5435:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -105,8 +97,6 @@ services:
   cart-server:
     build: ./Cart-server
     container_name: cart-server
-    ports:
-      - "9092:9092"
     environment:
       - DB_URL=jdbc:postgresql://cart-db:5432/cart
       - DB_USER=postgres
@@ -127,8 +117,6 @@ services:
       POSTGRES_DB: user
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-    ports:
-      - "5436:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
@@ -138,15 +126,13 @@ services:
   auth-server:
     build: ./AuthForge
     container_name: auth-server
-    ports:
-      - "1337:1337"
     environment:
       - DB_URL=jdbc:postgresql://user-db:5432/user
       - DB_USER=postgres
       - DB_PASS=1234
       - EUREKA_URL=http://discovery-server:8761/eureka/
     depends_on:
-      cart-db:
+      user-db: # تم تصحيح الخطأ هنا (كان cart-db)
         condition: service_healthy
       discovery-server:
         condition: service_started
@@ -157,7 +143,7 @@ services:
     container_name: pgadmin
     restart: always
     ports:
-      - "5050:80"
+      - "5050:80" # تستطيع الدخول لـ pgAdmin عبر بورت 5050
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin123
@@ -165,3 +151,4 @@ services:
       - product-db
       - order-db
       - cart-db
+      - user-db

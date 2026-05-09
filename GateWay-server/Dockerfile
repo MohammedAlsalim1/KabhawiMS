@@ -1,14 +1,19 @@
-# استخدام بيئة تشغيل جافا 21
-FROM eclipse-temurin:21-jre-alpine
-
-# تحديد مسار العمل داخل الحاوية
+# المرحلة الأولى: بناء المشروع وتوليد ملف الـ JAR داخل الحاوية
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
+# نسخ ملف إعدادات Maven (الاعتماديات)
+COPY pom.xml .
+# نسخ مجلد الأكواد المصدرية
+COPY src ./src
+# بناء المشروع وتخطي الاختبارات لتسريع عملية النشر
+RUN mvn clean package -DskipTests
 
-# نسخ ملف الـ JAR الخاص بالبوابة
-COPY target/GateWay-server-0.0.1-SNAPSHOT.jar app.jar
-
-# كشف المنفذ الخاص بالبوابة (8080)
+# المرحلة الثانية: بيئة التشغيل النهائية (النسخة الخفيفة)
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+# نسخ ملف الـ JAR من "المرحلة الأولى" بدلاً من البحث عنه في جهازك
+COPY --from=build /app/target/*.jar app.jar
+# كشف المنفذ 9091 (الخاص بخدمة الطلبات)
 EXPOSE 8080
-
-# أمر التشغيل
+# أمر تشغيل السيرفر
 ENTRYPOINT ["java", "-jar", "app.jar"]

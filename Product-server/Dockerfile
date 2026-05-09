@@ -1,14 +1,19 @@
-# استخدام بيئة تشغيل جافا 21 (نسخة خفيفة الحجم)
-FROM eclipse-temurin:21-jre-alpine
-
-# تحديد مسار العمل داخل الحاوية
+# المرحلة الأولى: بناء المشروع وتوليد ملف الـ JAR داخل الحاوية
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
+# نسخ ملف إعدادات Maven (الاعتماديات)
+COPY pom.xml .
+# نسخ مجلد الأكواد المصدرية
+COPY src ./src
+# بناء المشروع وتخطي الاختبارات لتسريع عملية النشر
+RUN mvn clean package -DskipTests
 
-# نسخ ملف الـ JAR الذي قمت بإنشائه في إنتيليجي إلى داخل الحاوية
-COPY target/Product-server-0.0.1-SNAPSHOT.jar app.jar
-
+# المرحلة الثانية: بيئة التشغيل النهائية (النسخة الخفيفة التي اخترتها)
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+# نسخ ملف الـ JAR من "المرحلة الأولى" بدلاً من البحث عنه في جهازك أو GitHub
+COPY --from=build /app/target/*.jar app.jar
 # كشف المنفذ 9090
 EXPOSE 9090
-
 # أمر تشغيل السيرفر
 ENTRYPOINT ["java", "-jar", "app.jar"]
