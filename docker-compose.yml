@@ -44,6 +44,10 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASSWORD}
       - EUREKA_URL=http://discovery-server:8761/eureka/
+      # 🔥 أضف هذه السطور الثلاثة لكي تعبر المفاتيح للحاوية
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
     depends_on:
       product-db:
         condition: service_healthy
