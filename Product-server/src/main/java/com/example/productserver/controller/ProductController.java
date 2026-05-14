@@ -43,6 +43,28 @@ public class ProductController {
             throw new RuntimeException("فشل في حفظ المنتج أو رفع الصور: " + e.getMessage());
         }
     }
+    // 👈 دالة التعديل (Update)
+    @PutMapping(value = "/updateProduct/{barcode}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductDto> updateProduct(
+            @PathVariable String barcode,
+            @RequestPart("product") ProductDto productDto,
+            @RequestPart(value = "images", required = false) MultipartFile[] images) {
+
+        try {
+            // التحقق مما إذا كان هناك صور جديدة تم إرفاقها للتعديل
+            if (images != null && images.length > 0) {
+                // رفع الصور الجديدة للسحابة
+                List<String> imageUrls = cloudinaryService.uploadMultipleImages(images);
+                productDto.setImageUrl(imageUrls);
+            }
+
+            // إرسال البيانات للـ Service للقيام بالتحديث
+            return ResponseEntity.ok(productService.updateProduct(barcode, productDto));
+
+        } catch (Exception e) {
+            throw new RuntimeException("فشل في تحديث المنتج: " + e.getMessage());
+        }
+    }
 
     @GetMapping("/getAllProducts")
     public ResponseEntity<List<ProductDto>> getProducts() {

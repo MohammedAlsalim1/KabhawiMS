@@ -63,23 +63,37 @@ public class ProductServiceImpl implements ProductService {
         if (productDto == null) {
             throw new InvalidException("Product is null");
         }
-       Product product=productRepository.findByBarcode(barcode)
+
+        // 1. إحضار المنتج القديم
+        Product product = productRepository.findByBarcode(barcode)
                 .orElseThrow(() -> new NotExistException("Product does not exist"));
+
+        // 2. تحديث البيانات الأساسية
+        // (ملاحظة: برمجياً يُفضل عدم السماح بتعديل الباركود لأنه المعرف الثابت، لكن تركته حسب رغبتك)
         product.setBarcode(productDto.getBarcode());
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
         product.setQuantity(productDto.getQuantity());
         product.setDescription(productDto.getDescription());
-        product.setImageUrl(productDto.getImageUrl());
         product.setMaterials(productDto.getMaterials());
         product.setWeight(productDto.getWeight());
+
+        // 🔥 3. حماية الصور: لا نُحدث الصور إلا إذا تم رفع صور جديدة بالفعل
+        if (productDto.getImageUrl() != null && !productDto.getImageUrl().isEmpty()) {
+            product.setImageUrl(productDto.getImageUrl());
+        }
+
+        // 🔥 4. ربط القسم: لكي لا يظهر categoryId كـ null بعد الآن
+        if (productDto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDto.getCategoryId())
+                    .orElseThrow(() -> new NotExistException("Category does not exist"));
+            product.setCategory(category);
+        }
+
+        // 5. الحفظ والتحويل
         productRepository.save(product);
         return mapper.map(product);
-
-
-
     }
-
 
     @Override
     public List<ProductDto> getAllProducts() {
