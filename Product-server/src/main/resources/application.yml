@@ -16,6 +16,12 @@ spring:
       hibernate:
         format_sql: true
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB       # أقصى حجم مسموح للصورة الواحدة (20 ميجا)
+      max-request-size: 100MB   # أقصى حجم مسموح للطلب بالكامل (مثلاً لو رفعت 5 صور معاً)
+
 server:
   port: 9090
 
