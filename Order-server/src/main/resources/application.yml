@@ -16,10 +16,24 @@ spring:
       hibernate:
         format_sql: true
 
+  mail:
+    host: smtp.hostinger.com
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+
 eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_URL}
+
   instance:
     prefer-ip-address: true
 

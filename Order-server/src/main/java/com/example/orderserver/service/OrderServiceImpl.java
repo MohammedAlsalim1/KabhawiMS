@@ -23,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
     private final CartClient cartClient;
     private final OrderRepository orderRepository;
     private final appMapper mapper;
+    private final EmailService emailService;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto, String authorization, String cartId) {
@@ -47,6 +48,19 @@ public class OrderServiceImpl implements OrderService {
 
         // حفظ الطلب
         order = orderRepository.save(order);
+
+        // 👈 خطوة إرسال الإيميل باللغة العبرية فوراً بعد نجاح الحفظ
+        try {
+            // ملاحظة: تأكد أن حقل الإيميل في الـ DTO اسمه getEmail() أو قم بتعديله حسب الكود لديك
+            String customerEmail = orderDto.getEmail();
+            if (customerEmail != null && !customerEmail.isEmpty()) {
+                emailService.sendOrderConfirmation(customerEmail, order.getId().toString());
+            }
+        } catch (Exception e) {
+            // نضعها داخل try-catch لكي نضمن أنه لو حدثت أي مشكلة في خادم السيرفر الخاص بالإيميل،
+            // لا يتوقف الطلب ولا يظهر خطأ للعميل، بل يكتمل شراء المنتجات بنجاح.
+            System.err.println("فشل إرسال البريد لكن تم حفظ الطلب بنجاح: " + e.getMessage());
+        }
 
         // مسح السلة بعد إنشاء الطلب
         cartClient.clearCart(cartId, authorization);
