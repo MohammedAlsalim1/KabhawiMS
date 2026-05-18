@@ -19,8 +19,8 @@ spring:
   mail:
     host: smtp.hostinger.com
     port: 465
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: info@alkabhawy-gallery.com
+    password: M7md@315050344
 
     properties:
       mail:
