@@ -14,7 +14,7 @@ public class EmailService {
     public void sendOrderConfirmation(String toEmail, String orderId) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("support@alkabhawy-gallery.com");
+            message.setFrom("info@alkabhawy-gallery.com");
             message.setTo(toEmail);
 
             // כותרת המייל בעברית
