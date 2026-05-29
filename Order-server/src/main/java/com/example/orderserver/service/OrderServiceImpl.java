@@ -6,6 +6,7 @@ import com.example.orderserver.data.dto.CartItemDto;
 import com.example.orderserver.data.dto.OrderDto;
 import com.example.orderserver.data.dto.OrderItemDto;
 import com.example.orderserver.data.entity.Order;
+import com.example.orderserver.data.entity.OrderItem;
 import com.example.orderserver.data.entity.OrderStatus;
 import com.example.orderserver.data.repository.OrderRepository;
 import com.example.orderserver.mapper.appMapper;
@@ -24,50 +25,54 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final appMapper mapper;
     private final EmailService emailService;
-
     @Override
     public OrderDto createOrder(OrderDto orderDto, String authorization, String cartId) {
-        // جلب السلة من Cart Service باستخدام cartId القادم من الـ Header
+        // 1. جلب السلة من Cart Service
         CartDto cart = cartClient.getCart(cartId, authorization);
 
         if (cart.getItems() == null || cart.getItems().isEmpty()) {
             throw new EmptyException("Cart is empty");
         }
+
+        // تحويل عناصر السلة ووضعها في الـ DTO
         orderDto.setItems(cart.getItems().stream()
                 .map(this::toOrderItem)
                 .collect(Collectors.toList()));
 
-        // تحويل DTO إلى Entity
+        // 2. تحويل DTO إلى Entity
         Order order = mapper.map(orderDto);
 
-        // تعبئة بيانات الطلب من السلة
+        // 3. تعبئة بيانات الطلب من السلة
         order.setCartId(cart.getCartId());
         order.setUserId(cart.getUserId());
         order.setTotalAmount(cart.getTotalPrice());
         order.setStatus(OrderStatus.CREATED);
 
-        // حفظ الطلب
+        // 🔥 الـحـل هـنـا: ربط العناصر بالطلب الأب برمجياً قبل الحفظ 🔥
+        if (order.getItems() != null) {
+            for (OrderItem item : order.getItems()) {
+                item.setOrder(order); // إخبار العنصر من هو الطلب الخاص به (ملء الـ Foreign Key)
+            }
+        }
+
+        // 4. حفظ الطلب (الآن سيتم حفظ الـ order_id في القاعدة بنجاح)
         order = orderRepository.save(order);
 
-        // 👈 خطوة إرسال الإيميل باللغة العبرية فوراً بعد نجاح الحفظ
+        // 5. خطوة إرسال الإيميل
         try {
-            // ملاحظة: تأكد أن حقل الإيميل في الـ DTO اسمه getEmail() أو قم بتعديله حسب الكود لديك
-            String customerEmail = orderDto.getEmail();
+            String customerEmail = order.getEmail(); // الأفضل جلب الإيميل من الـ Entity بعد التأكد منه
             if (customerEmail != null && !customerEmail.isEmpty()) {
                 emailService.sendOrderConfirmation(customerEmail, order.getId().toString());
             }
         } catch (Exception e) {
-            // نضعها داخل try-catch لكي نضمن أنه لو حدثت أي مشكلة في خادم السيرفر الخاص بالإيميل،
-            // لا يتوقف الطلب ولا يظهر خطأ للعميل، بل يكتمل شراء المنتجات بنجاح.
             System.err.println("فشل إرسال البريد لكن تم حفظ الطلب بنجاح: " + e.getMessage());
         }
 
-        // مسح السلة بعد إنشاء الطلب
+        // 6. مسح السلة بعد إنشاء الطلب
         cartClient.clearCart(cartId, authorization);
 
-        OrderDto map = mapper.map(order);
-
-        return map;
+        // 7. تحويل النتيجة النهائية إلى DTO وإرجاعها
+        return mapper.map(order);
     }
 
     @Override
