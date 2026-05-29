@@ -19,6 +19,7 @@ public class Gateway {
                 .route("authForge-signUp", Gateway::signUp)
                 .route("authForge-signIn", Gateway::signIn)
                 .route("authForge-parseToken", Gateway::parseToken)
+                .route("authForge-getAllUsers", Gateway::getAllUsers)
 
                 // Product Server Routes
                 .route("product-server", Gateway::productServer)
@@ -55,6 +56,11 @@ public class Gateway {
     private static Buildable<Route> signUp(PredicateSpec predicateSpec) {
         return predicateSpec.path("/signUp")
                 .filters(f -> f.rewritePath("/signUp", "/sign-up"))
+                .uri("lb://auth-forge");
+    }
+    private static Buildable<Route> getAllUsers(PredicateSpec predicateSpec) {
+        return predicateSpec.path("/get-all-users")
+                .filters(f -> f.rewritePath("/getAllUsers", "/get-all-users"))
                 .uri("lb://auth-forge");
     }
     private static Buildable<Route> productServer(PredicateSpec predicateSpec) {
