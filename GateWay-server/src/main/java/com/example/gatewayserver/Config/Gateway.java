@@ -59,7 +59,7 @@ public class Gateway {
                 .uri("lb://auth-forge");
     }
     private static Buildable<Route> getAllUsers(PredicateSpec predicateSpec) {
-        return predicateSpec.path("/get-all-users")
+        return predicateSpec.path("/getAllUsers")
                 .filters(f -> f.rewritePath("/getAllUsers", "/get-all-users"))
                 .uri("lb://auth-forge");
     }
