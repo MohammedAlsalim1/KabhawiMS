@@ -12,7 +12,6 @@ public class ProductDto {
     private String barcode ;
     private int quantity;
     private Long categoryId;
-
     private double weight;
     private List<String> materials;
     private List<String> imageUrl;
