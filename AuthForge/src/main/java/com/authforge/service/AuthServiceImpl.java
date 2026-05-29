@@ -29,6 +29,10 @@ public class AuthServiceImpl implements AuthForgeService {
     @Value("${jwt.expiration.millis}")
     private long jwtExpirationMillis;
 
+    // تم إضافة حقن المفتاح السري هنا لمنع الـ NullPointerException وضع قيمة افتراضية للاحتياط
+    @Value("${jwt.secret:defaultSuperSecretKeyThatIsLongEnoughToSatisfyHMACRequirements}")
+    private String jwtSecret;
+
     @Override
     public String authenticateAndGenerateToken(String username,
                                                String password) throws AuthException {
@@ -56,9 +60,7 @@ public class AuthServiceImpl implements AuthForgeService {
 
     @Override
     public UserDto parseTokenAndGetUser(String token) {
-
-        String jwtSecret = System.getenv("JWT_SECRET");
-
+        // تم استبدال System.getenv بالمتغير المحقن jwtSecret
         Jws<Claims> claimsJws = Jwts.parserBuilder()
                 .setSigningKey(jwtSecret.getBytes())
                 .build()
@@ -153,9 +155,8 @@ public class AuthServiceImpl implements AuthForgeService {
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
                 .signWith(
-                        Keys.hmacShaKeyFor(
-                                System.getenv("JWT_SECRET").getBytes()
-                        )
+                        // تم استبدال System.getenv بالمتغير المحقن jwtSecret
+                        Keys.hmacShaKeyFor(jwtSecret.getBytes())
                 )
                 .compact();
     }
