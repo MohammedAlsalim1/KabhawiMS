@@ -11,7 +11,7 @@ public class ProductDto {
     private double price;
     private String barcode ;
     private int quantity;
-    private Long categoryId;
+    private Long category_id;
     private double weight;
     private List<String> materials;
     private List<String> imageUrl;
