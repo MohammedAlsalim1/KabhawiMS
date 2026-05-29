@@ -1,5 +1,6 @@
 package com.authforge.service;
 
+import com.authforge.data.entity.Role;
 import com.authforge.data.entity.User;
 import com.authforge.data.repository.UserRepository;
 import com.authforge.web.dto.UserDto;
@@ -8,11 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -34,20 +32,31 @@ public class AuthServiceImpl implements AuthForgeService {
     @Override
     public String authenticateAndGenerateToken(String username,
                                                String password) throws AuthException {
+
         Optional<User> optUser = userRepository.findByUsername(username);
-        if (optUser.isEmpty() || !passwordEncoder.matches(password,
-                                                          optUser.get().getBcryptPassword())) {
+
+        if (optUser.isEmpty() ||
+                !passwordEncoder.matches(password,
+                        optUser.get().getBcryptPassword())) {
+
             throw new AuthException("Authentication failed");
         }
 
         User user = optUser.get();
 
-        return generateJwtToken(user.getUsername(),user.getFirstName(),user.getLastName(),user.getPhoneNumber(), user.getUuid());
+        return generateJwtToken(
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhoneNumber(),
+                user.getUuid(),
+                user.getRole()
+        );
     }
 
     @Override
     public UserDto parseTokenAndGetUser(String token) {
-        // Fetch the JWT secret from environment variables
+
         String jwtSecret = System.getenv("JWT_SECRET");
 
         Jws<Claims> claimsJws = Jwts.parserBuilder()
@@ -57,20 +66,32 @@ public class AuthServiceImpl implements AuthForgeService {
 
         Claims claims = claimsJws.getBody();
 
-
         String username = claims.get("username", String.class);
         String firstName = claims.get("firstName", String.class);
         String lastName = claims.get("lastName", String.class);
         String phoneNumber = claims.get("phoneNumber", String.class);
         String uuidStr = claims.get("uuid", String.class);
+        String role = claims.get("role", String.class);
 
-        return new UserDto(username,firstName,lastName,phoneNumber, UUID.fromString(uuidStr));
+        return new UserDto(
+                username,
+                firstName,
+                lastName,
+                phoneNumber,
+                UUID.fromString(uuidStr),
+                Role.valueOf(role)
+        );
     }
 
     @Override
-    public boolean signUp(String username, String password,String firstName,String lastName,String phoneNumber) {
+    public boolean signUp(String username,
+                          String password,
+                          String firstName,
+                          String lastName,
+                          String phoneNumber) {
 
         Optional<User> optUser = userRepository.findByUsername(username);
+
         if (optUser.isPresent()) {
             return false;
         }
@@ -81,28 +102,61 @@ public class AuthServiceImpl implements AuthForgeService {
                 .lastName(lastName)
                 .phoneNumber(phoneNumber)
                 .bcryptPassword(passwordEncoder.encode(password))
+                .role(Role.USER)
                 .build();
 
         userRepository.save(newUser);
+
         return true;
     }
 
-    private String generateJwtToken(String username,String firstName,String lastName,String phoneNumber, UUID uuid) {
-        Date expirationDate = new Date(System.currentTimeMillis() + jwtExpirationMillis);
+    @Override
+    public List<UserDto> getAllUsers() {
+
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserDto(
+                        user.getUsername(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getPhoneNumber(),
+                        user.getUuid(),
+                        user.getRole()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private String generateJwtToken(
+            String username,
+            String firstName,
+            String lastName,
+            String phoneNumber,
+            UUID uuid,
+            Role role
+    ) {
+
+        Date expirationDate =
+                new Date(System.currentTimeMillis() + jwtExpirationMillis);
+
         Map<String, Object> claims = new HashMap<>();
+
         claims.put("username", username);
         claims.put("firstName", firstName);
         claims.put("lastName", lastName);
         claims.put("phoneNumber", phoneNumber);
         claims.put("uuid", uuid);
+        claims.put("role", role.name());
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
-                .signWith(Keys.hmacShaKeyFor(System.getenv("JWT_SECRET").getBytes()))
+                .signWith(
+                        Keys.hmacShaKeyFor(
+                                System.getenv("JWT_SECRET").getBytes()
+                        )
+                )
                 .compact();
     }
-
 }

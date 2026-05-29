@@ -20,18 +20,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcType(CharJdbcType.class)
     private UUID uuid;
+
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String bcryptPassword;
+
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
+
     @Column(nullable = false)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 }

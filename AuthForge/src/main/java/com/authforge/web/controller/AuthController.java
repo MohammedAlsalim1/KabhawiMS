@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -37,5 +39,11 @@ public class AuthController {
     public ResponseEntity<UserDto> parseToken(@RequestHeader("Authorization") String token) {
         UserDto userDto = authForgeService.parseTokenAndGetUser(token);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping("/get-all-users")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = authForgeService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 }
