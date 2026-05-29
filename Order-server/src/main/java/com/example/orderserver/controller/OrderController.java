@@ -23,6 +23,13 @@ public class OrderController {
         return ResponseEntity.ok(created);
     }
 
+    @GetMapping("/getOrders")
+    public ResponseEntity<List<OrderDto>> getOrders() {
+
+       List<OrderDto> orders = orderService.getOrders();
+        return ResponseEntity.ok(orders);
+    }
+
     // جلب طلب حسب الـ ID
     @GetMapping("/trackbyOrderNumber")
     public ResponseEntity<OrderDto> getOrderById(@RequestParam Long id) {

@@ -118,6 +118,14 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(orderId);
     }
 
+    @Override
+    public List<OrderDto> getOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(mapper::map)
+                .collect(Collectors.toList());
+    }
+
     public OrderItemDto toOrderItem(CartItemDto cartItem) {
         OrderItemDto item = new OrderItemDto();
         item.setBarcode(cartItem.getBarcode());
