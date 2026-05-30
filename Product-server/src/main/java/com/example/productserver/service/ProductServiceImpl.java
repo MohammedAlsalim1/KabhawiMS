@@ -43,9 +43,7 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
 
         // 6. Return mapped DTO
-        ProductDto map = mapper.map(savedProduct);
-        map.setCategoryId(category.getId());
-        return map;
+        return mapper.map(savedProduct);
     }
 
     @Override
