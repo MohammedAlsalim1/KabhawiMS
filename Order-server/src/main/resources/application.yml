@@ -17,10 +17,10 @@ spring:
         format_sql: true
 
   mail:
-    host: smtp.hostinger.com
-    port: 465
-    username: info@alkabhawy-gallery.com
-    password: "M7md@315050344" # 👈 التعديل الأول: وضع علامات تنصيص لحماية كلمة المرور
+    host: ${MAIL_HOST:smtp.hostinger.com}
+    port: ${MAIL_PORT:465}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
 
     properties:
       mail:
@@ -30,7 +30,7 @@ spring:
             enable: true
           # 👈 التعديل الثاني: إضافة إعدادات مصنع الاتصال الآمن بصيغة YAML
           socketFactory:
-            port: 465
+            port: ${MAIL_PORT:465}
             class: javax.net.ssl.SSLSocketFactory
             fallback: false
 
