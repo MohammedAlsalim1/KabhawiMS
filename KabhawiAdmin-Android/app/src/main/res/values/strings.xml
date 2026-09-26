@@ -54,6 +54,7 @@
     <string name="error_no_connection">تعذّر الاتصال بالخادم. تحقق من العنوان ومن اتصال الشبكة</string>
     <string name="error_timeout">انتهت مهلة الاتصال بالخادم</string>
     <string name="error_ssl">فشل الاتصال الآمن (SSL) بالخادم</string>
+    <string name="error_bad_response">استجابة غير متوقعة من الخادم. تأكد أن العنوان يشير إلى Gateway الخاص بـ KabhawiMS</string>
     <string name="error_network">حدث خطأ في الشبكة، حاول مجدداً</string>
     <string name="error_unexpected">حدث خطأ غير متوقع: %1$s</string>
     <string name="error_http_400">البيانات المرسلة غير صالحة</string>

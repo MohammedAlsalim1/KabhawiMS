@@ -3,6 +3,7 @@ package com.kabhawi.admin.data.remote
 import com.kabhawi.admin.R
 import com.kabhawi.admin.data.model.ServerError
 import com.kabhawi.admin.util.UiText
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import retrofit2.Response
@@ -30,6 +31,8 @@ fun Throwable.toUiText(): UiText = when (this) {
     is UnknownHostException, is ConnectException -> UiText.Res(R.string.error_no_connection)
     is SSLException -> UiText.Res(R.string.error_ssl)
     is IOException -> UiText.Res(R.string.error_network)
+    // SerializationException يرث IllegalArgumentException لذا يجب فحصه أولاً
+    is SerializationException -> UiText.Res(R.string.error_bad_response)
     is IllegalArgumentException -> UiText.Res(R.string.error_invalid_server_url)
     else -> UiText.Res(R.string.error_unexpected, message ?: javaClass.simpleName)
 }

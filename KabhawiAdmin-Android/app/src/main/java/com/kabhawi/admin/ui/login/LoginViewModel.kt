@@ -86,6 +86,10 @@ class LoginViewModel(private val container: AppContainer) : ViewModel() {
                     .trim()
                     .removeSurrounding("\"")
                 if (token.isBlank()) throw AppException(UiText.Res(R.string.login_failed))
+                // JWT = ثلاثة أجزاء بدون مسافات؛ غير ذلك يعني أن العنوان لا يشير إلى KabhawiMS
+                if (token.count { it == '.' } != 2 || token.any { it.isWhitespace() }) {
+                    throw AppException(UiText.Res(R.string.error_bad_response))
+                }
 
                 val user = api.parseToken(token)
                 if (!user.isAdmin) {

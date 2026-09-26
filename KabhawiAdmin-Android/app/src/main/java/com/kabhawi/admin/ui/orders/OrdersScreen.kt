@@ -59,6 +59,7 @@ fun OrdersScreen(vm: OrdersViewModel) {
 
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val twoPane = maxWidth >= 840.dp
+        val listWidth = if (maxWidth >= 1100.dp) 440.dp else 380.dp
         val selected = state.selected
         if (twoPane) {
             Row(Modifier.fillMaxSize()) {
@@ -66,7 +67,7 @@ fun OrdersScreen(vm: OrdersViewModel) {
                     state = state,
                     vm = vm,
                     modifier = Modifier
-                        .width(if (maxWidth >= 1100.dp) 440.dp else 380.dp)
+                        .width(listWidth)
                         .fillMaxHeight(),
                 )
                 VerticalDivider()
