@@ -15,3 +15,7 @@ captures/
 *.aab
 *.keystore
 *.jks
+
+# مخرجات تسجيل فيديو العرض
+demo/output/
+__pycache__/

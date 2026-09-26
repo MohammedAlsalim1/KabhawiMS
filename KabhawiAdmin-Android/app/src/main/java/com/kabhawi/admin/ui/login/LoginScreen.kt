@@ -47,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -208,7 +209,7 @@ private fun LoginForm(state: LoginUiState, vm: LoginViewModel, modifier: Modifie
         OutlinedTextField(
             value = state.serverUrl,
             onValueChange = vm::onServerUrlChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("login_server"),
             label = { Text(stringResource(R.string.login_server_url)) },
             placeholder = { Text(stringResource(R.string.login_server_url_hint)) },
             leadingIcon = { Icon(Icons.Outlined.Dns, contentDescription = null) },
@@ -224,7 +225,9 @@ private fun LoginForm(state: LoginUiState, vm: LoginViewModel, modifier: Modifie
         TextButton(
             onClick = vm::testConnection,
             enabled = !busy,
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier
+                .align(Alignment.End)
+                .testTag("login_test"),
         ) {
             if (state.isTesting) {
                 CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
@@ -238,7 +241,7 @@ private fun LoginForm(state: LoginUiState, vm: LoginViewModel, modifier: Modifie
         OutlinedTextField(
             value = state.username,
             onValueChange = vm::onUsernameChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("login_username"),
             label = { Text(stringResource(R.string.login_username)) },
             leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null) },
             singleLine = true,
@@ -249,7 +252,7 @@ private fun LoginForm(state: LoginUiState, vm: LoginViewModel, modifier: Modifie
         OutlinedTextField(
             value = state.password,
             onValueChange = vm::onPasswordChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("login_password"),
             label = { Text(stringResource(R.string.login_password)) },
             leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
             trailingIcon = {
@@ -299,7 +302,8 @@ private fun LoginForm(state: LoginUiState, vm: LoginViewModel, modifier: Modifie
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(54.dp),
+                .height(54.dp)
+                .testTag("login_submit"),
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(

@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -113,6 +114,7 @@ fun MainScreen() {
                             onClick = { destination = item },
                             icon = { DestinationIcon(item, newOrders) },
                             label = { Text(stringResource(item.label), maxLines = 1) },
+                            modifier = Modifier.testTag("nav_${item.name}"),
                         )
                     }
                 }
@@ -147,7 +149,9 @@ fun MainScreen() {
                             onClick = { destination = item },
                             icon = { DestinationIcon(item, newOrders) },
                             label = { Text(stringResource(item.label), maxLines = 1) },
-                            modifier = Modifier.padding(vertical = 4.dp),
+                            modifier = Modifier
+                                .padding(vertical = 4.dp)
+                                .testTag("nav_${item.name}"),
                         )
                     }
                     Spacer(Modifier.height(12.dp))
