@@ -2,6 +2,7 @@ package com.kabhawi.admin.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -136,9 +137,11 @@ fun LoginScreen() {
 @Composable
 private fun BrandPanel(modifier: Modifier = Modifier, compact: Boolean = false) {
     Box(
-        modifier = modifier.background(
-            Brush.verticalGradient(listOf(Color(0xFF0B5D5B), Color(0xFF052E2D))),
-        ),
+        modifier = modifier
+            .background(Brush.verticalGradient(listOf(Color(0xFF0B5D5B), Color(0xFF052E2D))))
+            // على Android 8.1 وما قبله يُعطى التركيز تلقائياً لأول عنصر قابل للتركيز عند فتح النافذة،
+            // فتظهر لوحة المفاتيح فوق شاشة الدخول. هذه اللوحة تأخذ ذلك التركيز بدلاً من حقل النص.
+            .focusable(),
         contentAlignment = Alignment.Center,
     ) {
         Column(
