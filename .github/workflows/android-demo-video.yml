@@ -1,0 +1,92 @@
+name: Android Admin Demo Video
+
+# يسجّل فيديو لواجهة التطبيق على محاكي تابلت Android 7.0 باستخدام خادم تجريبي،
+# ثم يحفظ الفيديو ولقطات الشاشة في KabhawiAdmin-Android/docs/media.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'KabhawiAdmin-Android/demo/**'
+      - '.github/workflows/android-demo-video.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  record:
+    name: Record UI tour (Android 7.0 tablet)
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build app and tour APKs
+        working-directory: KabhawiAdmin-Android
+        run: ./gradlew assembleDebug assembleDebugAndroidTest --stacktrace
+
+      - name: Start mock KabhawiMS server
+        working-directory: KabhawiAdmin-Android/demo
+        run: |
+          python -m pip install --quiet pillow
+          nohup python mock_server.py --port 8080 > mock.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:8080/getAllUsers > /dev/null && break; sleep 1; done
+          curl -sf http://localhost:8080/api/product/getCategories | head -c 300; echo
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Record tour on Android 7.0 tablet emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 24
+          target: default
+          arch: x86_64
+          profile: Nexus 10
+          disable-animations: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -skin 1920x1200
+          script: bash KabhawiAdmin-Android/demo/record_demo.sh
+
+      - name: Encode video and screenshots
+        if: always()
+        run: bash KabhawiAdmin-Android/demo/make_video.sh
+
+      - name: Show mock server log
+        if: always()
+        run: tail -60 KabhawiAdmin-Android/demo/mock.log || true
+
+      - name: Upload recording
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kabhawi-admin-demo
+          path: |
+            KabhawiAdmin-Android/docs/media/
+            KabhawiAdmin-Android/demo/output/instrument.txt
+            KabhawiAdmin-Android/demo/output/logcat.txt
+
+      - name: Commit video to the branch
+        run: |
+          if ! grep -q "OK (1 test)" KabhawiAdmin-Android/demo/output/instrument.txt; then
+            echo "Tour did not complete; not committing media."
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add KabhawiAdmin-Android/docs/media
+          git commit -m "Add admin app demo video and screenshots (recorded on Android 7.0 tablet emulator)"
+          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"

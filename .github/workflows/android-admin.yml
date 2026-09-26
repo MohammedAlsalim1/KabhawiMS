@@ -1,0 +1,53 @@
+name: Android Admin App
+
+on:
+  push:
+    paths:
+      - 'KabhawiAdmin-Android/**'
+      - '.github/workflows/android-admin.yml'
+  pull_request:
+    paths:
+      - 'KabhawiAdmin-Android/**'
+      - '.github/workflows/android-admin.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build APK & unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: KabhawiAdmin-Android
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Build debug & release APKs
+        run: ./gradlew assembleDebug assembleRelease --stacktrace
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: kabhawi-admin-apk
+          path: |
+            KabhawiAdmin-Android/app/build/outputs/apk/release/*.apk
+            KabhawiAdmin-Android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: KabhawiAdmin-Android/app/build/reports/

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  * cleartextTrafficPermitted: يسمح بالاتصال عبر http (مثل خادم محلي http://192.168.x.x:8080
+    وروابط صور Cloudinary التي يعيدها الخادم بصيغة http).
+  * شهادات ISRG Root X1/X2 (Let's Encrypt) مضمّنة لأن Android 7.0 لا يثق بها افتراضياً،
+    وبدونها سيفشل الاتصال بأي خادم https يستخدم شهادة Let's Encrypt.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/isrg_root_x1" />
+            <certificates src="@raw/isrg_root_x2" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

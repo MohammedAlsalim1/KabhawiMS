@@ -1,0 +1,21 @@
+# ملف الـ wrapper مطلوب لبناء المشروع رغم أن .gitignore الرئيسي يتجاهل ملفات *.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+.gradle/
+build/
+/app/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# مخرجات تسجيل فيديو العرض
+demo/output/
+__pycache__/

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">إدارة المتجر</string>
+
+    <!-- الهوية -->
+    <string name="brand_name">KabhawiMS</string>
+    <string name="brand_tagline">لوحة إدارة المتجر الإلكتروني</string>
+    <string name="brand_feature_products">إدارة المنتجات والأقسام والصور</string>
+    <string name="brand_feature_orders">متابعة الطلبات وتحديث حالتها</string>
+    <string name="brand_feature_stats">إحصائيات المبيعات وتنبيهات المخزون</string>
+
+    <!-- التنقل -->
+    <string name="nav_dashboard">الرئيسية</string>
+    <string name="nav_orders">الطلبات</string>
+    <string name="nav_products">المنتجات</string>
+    <string name="nav_categories">الأقسام</string>
+    <string name="nav_users">المستخدمون</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- إجراءات عامة -->
+    <string name="action_add">إضافة</string>
+    <string name="action_back">رجوع</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_clear">مسح</string>
+    <string name="action_close">إغلاق</string>
+    <string name="action_confirm">تأكيد</string>
+    <string name="action_decrease">إنقاص</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_discard">تجاهل التغييرات</string>
+    <string name="action_edit">تعديل</string>
+    <string name="action_increase">زيادة</string>
+    <string name="action_refresh">تحديث</string>
+    <string name="action_remove">إزالة</string>
+    <string name="action_retry">إعادة المحاولة</string>
+    <string name="action_save">حفظ</string>
+    <string name="action_scan">مسح الباركود</string>
+    <string name="action_show_all">عرض الكل</string>
+
+    <!-- حالات عامة -->
+    <string name="state_error_title">تعذّر تحميل البيانات</string>
+    <string name="state_no_results">لا توجد نتائج</string>
+    <string name="state_no_results_message">جرّب كلمات بحث أو فلاتر مختلفة</string>
+    <string name="state_saving">جاري الحفظ…</string>
+    <string name="state_updating">جاري التحديث…</string>
+    <string name="scan_prompt">وجّه الكاميرا نحو الباركود</string>
+    <string name="editor_discard_title">تجاهل التغييرات؟</string>
+    <string name="editor_discard_message">لديك تعديلات غير محفوظة. هل تريد الخروج دون حفظها؟</string>
+
+    <!-- الأخطاء -->
+    <string name="error_required">هذا الحقل مطلوب</string>
+    <string name="error_invalid_number">أدخل رقماً صحيحاً (0 أو أكثر)</string>
+    <string name="error_invalid_integer">أدخل عدداً صحيحاً بدون كسور (0 أو أكثر)</string>
+    <string name="error_invalid_server_url">عنوان الخادم غير صالح</string>
+    <string name="error_no_connection">تعذّر الاتصال بالخادم. تحقق من العنوان ومن اتصال الشبكة</string>
+    <string name="error_timeout">انتهت مهلة الاتصال بالخادم</string>
+    <string name="error_ssl">فشل الاتصال الآمن (SSL) بالخادم</string>
+    <string name="error_bad_response">استجابة غير متوقعة من الخادم. تأكد أن العنوان يشير إلى Gateway الخاص بـ KabhawiMS</string>
+    <string name="error_network">حدث خطأ في الشبكة، حاول مجدداً</string>
+    <string name="error_unexpected">حدث خطأ غير متوقع: %1$s</string>
+    <string name="error_http_400">البيانات المرسلة غير صالحة</string>
+    <string name="error_http_401">انتهت الجلسة أو بيانات الدخول غير صحيحة</string>
+    <string name="error_http_403">ليست لديك صلاحية لتنفيذ هذا الإجراء</string>
+    <string name="error_http_404">العنصر المطلوب غير موجود</string>
+    <string name="error_http_409">العنصر موجود مسبقاً</string>
+    <string name="error_http_413">حجم الصور كبير جداً</string>
+    <string name="error_http_unavailable">الخدمة غير متاحة حالياً. تأكد من تشغيل خدمات KabhawiMS ثم حاول مجدداً</string>
+    <string name="error_http_server">حدث خطأ في الخادم (رمز %1$s)</string>
+    <string name="error_http_generic">تعذّر تنفيذ الطلب (رمز %1$s)</string>
+    <string name="error_with_detail">%1$s\n(%2$s)</string>
+    <string name="error_no_app_for_action">لا يوجد تطبيق على الجهاز لتنفيذ هذا الإجراء</string>
+
+    <!-- تسجيل الدخول -->
+    <string name="login_title">تسجيل الدخول</string>
+    <string name="login_subtitle">سجّل الدخول بحساب مدير لإدارة المتجر</string>
+    <string name="login_server_url">عنوان الخادم (Gateway)</string>
+    <string name="login_server_url_hint">http://192.168.1.10:8080</string>
+    <string name="login_server_url_help">عنوان خدمة GateWay-server (المنفذ الافتراضي 8080)</string>
+    <string name="login_test_connection">اختبار الاتصال</string>
+    <string name="login_connection_ok">تم الاتصال بالخادم بنجاح</string>
+    <string name="login_username">اسم المستخدم أو البريد الإلكتروني</string>
+    <string name="login_password">كلمة المرور</string>
+    <string name="login_show_password">إظهار كلمة المرور</string>
+    <string name="login_hide_password">إخفاء كلمة المرور</string>
+    <string name="login_action">تسجيل الدخول</string>
+    <string name="login_missing_fields">أدخل اسم المستخدم وكلمة المرور</string>
+    <string name="login_invalid_credentials">اسم المستخدم أو كلمة المرور غير صحيحة</string>
+    <string name="login_not_admin">هذا الحساب لا يملك صلاحية المدير (ADMIN)</string>
+    <string name="login_failed">فشل تسجيل الدخول</string>
+
+    <!-- لوحة التحكم -->
+    <string name="dashboard_title">لوحة التحكم</string>
+    <string name="dashboard_greeting">مرحباً %1$s، إليك ملخص المتجر</string>
+    <string name="dashboard_recent_orders">أحدث الطلبات</string>
+    <string name="dashboard_low_stock">تنبيهات المخزون</string>
+    <string name="dashboard_stock_ok">جميع المنتجات متوفرة بكميات كافية</string>
+    <string name="dashboard_orders_by_status">الطلبات حسب الحالة</string>
+    <string name="dashboard_top_products">الأكثر مبيعاً</string>
+    <string name="dashboard_no_sales">لا توجد مبيعات بعد</string>
+    <string name="dashboard_units_sold">%1$s قطعة مباعة</string>
+    <string name="stat_revenue">إجمالي المبيعات</string>
+    <string name="stat_average_order">متوسط الطلب: %1$s</string>
+    <string name="stat_new_orders">طلبات جديدة</string>
+    <string name="stat_new_orders_hint">بانتظار الشحن</string>
+    <string name="stat_total_orders">إجمالي الطلبات</string>
+    <string name="stat_orders_breakdown">%1$s تم شحنها · %2$s ملغاة</string>
+    <string name="stat_units_sold">القطع المباعة</string>
+    <string name="stat_products">المنتجات</string>
+    <string name="stat_stock_breakdown">%1$s نفد · %2$s منخفض</string>
+    <string name="stat_inventory_value">قيمة المخزون</string>
+    <string name="stat_categories">الأقسام</string>
+    <string name="stat_customers">العملاء</string>
+    <string name="stat_admins">%1$s مدير</string>
+
+    <!-- المخزون -->
+    <string name="stock_out">نفد</string>
+    <string name="stock_low_count">منخفض: %1$s</string>
+    <string name="stock_count">متوفر: %1$s</string>
+
+    <!-- المنتجات -->
+    <string name="products_title">المنتجات</string>
+    <string name="products_subtitle">عرض %1$s من %2$s منتج</string>
+    <string name="products_add">إضافة منتج</string>
+    <string name="products_search_hint">ابحث بالاسم أو الباركود أو المادة</string>
+    <string name="products_sort">ترتيب</string>
+    <string name="products_filter_low">مخزون منخفض</string>
+    <string name="products_filter_out">نفد من المخزون</string>
+    <string name="products_all_categories">كل الأقسام</string>
+    <string name="products_empty_title">لا توجد منتجات بعد</string>
+    <string name="products_empty_message">ابدأ بإضافة منتجات المتجر مع صورها وأسعارها.</string>
+    <string name="sort_name">الاسم</string>
+    <string name="sort_price_asc">السعر: من الأقل إلى الأعلى</string>
+    <string name="sort_price_desc">السعر: من الأعلى إلى الأقل</string>
+    <string name="sort_quantity_asc">الكمية: من الأقل إلى الأعلى</string>
+    <string name="sort_quantity_desc">الكمية: من الأعلى إلى الأقل</string>
+
+    <string name="product_new_title">منتج جديد</string>
+    <string name="product_edit_title">تعديل المنتج</string>
+    <string name="product_section_basic">المعلومات الأساسية</string>
+    <string name="product_section_pricing">السعر والمخزون</string>
+    <string name="product_name_required">اسم المنتج *</string>
+    <string name="product_barcode">الباركود</string>
+    <string name="product_barcode_required">الباركود *</string>
+    <string name="product_category_required">القسم *</string>
+    <string name="product_category_choose">اختر القسم</string>
+    <string name="product_no_categories">لا توجد أقسام، أضف قسماً أولاً</string>
+    <string name="product_no_category">بدون قسم</string>
+    <string name="product_price_required">السعر *</string>
+    <string name="product_quantity_required">الكمية *</string>
+    <string name="product_weight">الوزن</string>
+    <string name="product_materials">المواد</string>
+    <string name="product_material_hint">أضف مادة (مثل: ذهب، فضة) ثم اضغط +</string>
+    <string name="product_description">الوصف</string>
+    <string name="product_description_hint">وصف المنتج (اختياري)</string>
+    <string name="product_images">صور المنتج</string>
+    <string name="product_images_hint">الصورة الأولى تظهر كصورة رئيسية. تُصغَّر الصور تلقائياً قبل رفعها.</string>
+    <string name="product_images_current">الصور الحالية</string>
+    <string name="product_images_new">صور جديدة</string>
+    <string name="product_images_pick">اختيار صور</string>
+    <string name="product_images_replace_warning">ستحل الصور الجديدة محل جميع الصور الحالية عند الحفظ</string>
+    <string name="product_stock">المخزون</string>
+    <string name="product_save_stock">حفظ الكمية</string>
+    <string name="product_stock_updated">تم تحديث الكمية</string>
+    <string name="product_added">تمت إضافة المنتج «%1$s»</string>
+    <string name="product_updated">تم تحديث المنتج «%1$s»</string>
+    <string name="product_deleted">تم حذف المنتج «%1$s»</string>
+    <string name="product_delete_title">حذف المنتج</string>
+    <string name="product_delete_message">هل تريد حذف المنتج «%1$s» نهائياً؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="product_unknown">منتج غير معروف (%1$s)</string>
+    <string name="product_scan_not_found">لا يوجد منتج بالباركود %1$s، يمكنك إضافته الآن</string>
+    <string name="product_error_duplicate_name">يوجد منتج آخر بنفس الاسم</string>
+    <string name="product_error_duplicate_barcode">هذا الباركود مستخدم لمنتج آخر</string>
+    <string name="product_error_barcode_chars">لا يمكن أن يحتوي الباركود على الرمز /</string>
+    <string name="product_error_category">اختر قسماً للمنتج</string>
+
+    <!-- الأقسام -->
+    <string name="categories_title">الأقسام</string>
+    <string name="categories_subtitle">%1$s قسم</string>
+    <string name="categories_add">إضافة قسم</string>
+    <string name="categories_search_hint">ابحث عن قسم</string>
+    <string name="categories_empty_title">لا توجد أقسام بعد</string>
+    <string name="categories_empty_message">أضف أول قسم لتنظيم منتجات المتجر.</string>
+    <string name="category_new_title">قسم جديد</string>
+    <string name="category_edit_title">تعديل القسم</string>
+    <string name="category_name_required">اسم القسم *</string>
+    <string name="category_pick_image">اضغط لاختيار صورة</string>
+    <string name="category_change_image">اضغط لتغيير الصورة</string>
+    <string name="category_products_count">%1$s منتج</string>
+    <string name="category_out_of_stock">%1$s نفد</string>
+    <string name="category_added">تمت إضافة القسم «%1$s»</string>
+    <string name="category_updated">تم تحديث القسم «%1$s»</string>
+    <string name="category_deleted">تم حذف القسم «%1$s»</string>
+    <string name="category_delete_title">حذف القسم</string>
+    <string name="category_delete_message">هل تريد حذف القسم «%1$s»؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="category_delete_message_with_products">سيتم حذف القسم «%1$s» مع جميع منتجاته (%2$s منتج) نهائياً. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="category_error_duplicate">يوجد قسم بهذا الاسم مسبقاً</string>
+    <string name="category_error_image">صورة القسم مطلوبة</string>
+    <string name="category_error_name_chars">لا يمكن أن يحتوي الاسم على الرمز /</string>
+
+    <!-- الطلبات -->
+    <string name="orders_title">الطلبات</string>
+    <string name="orders_subtitle">%1$s طلب</string>
+    <string name="orders_search_hint">ابحث برقم الطلب أو الاسم أو الهاتف</string>
+    <string name="orders_filter_all">الكل (%1$s)</string>
+    <string name="orders_filter_status">%1$s (%2$s)</string>
+    <string name="orders_empty">لا توجد طلبات بعد</string>
+    <string name="orders_select_title">لم يتم اختيار طلب</string>
+    <string name="orders_select_message">اختر طلباً من القائمة لعرض تفاصيله وتحديث حالته</string>
+    <string name="order_number">طلب #%1$s</string>
+    <string name="order_unknown_customer">عميل بدون اسم</string>
+    <string name="order_items_count">%1$s قطعة</string>
+    <string name="order_status_created">جديد</string>
+    <string name="order_status_shipped">تم الشحن</string>
+    <string name="order_status_cancelled">ملغي</string>
+    <string name="order_status_unknown">غير معروف</string>
+    <string name="order_customer">بيانات العميل</string>
+    <string name="order_customer_name">الاسم</string>
+    <string name="order_phone">رقم الهاتف</string>
+    <string name="order_email">البريد الإلكتروني</string>
+    <string name="order_address">العنوان</string>
+    <string name="order_customer_type">نوع العميل</string>
+    <string name="order_customer_registered">عميل مسجّل</string>
+    <string name="order_customer_guest">زائر (بدون حساب)</string>
+    <string name="order_items_title">المنتجات (%1$s قطعة)</string>
+    <string name="order_no_items">لا توجد منتجات في هذا الطلب</string>
+    <string name="order_item_barcode">الباركود: %1$s</string>
+    <string name="order_item_quantity_price">%1$s × %2$s</string>
+    <string name="order_total">الإجمالي</string>
+    <string name="order_action_ship">تأكيد الشحن</string>
+    <string name="order_action_cancel">إلغاء الطلب</string>
+    <string name="order_action_back_to_new">إرجاع إلى جديد</string>
+    <string name="order_action_reactivate">إعادة تفعيل الطلب</string>
+    <string name="order_change_status_title">تغيير حالة الطلب</string>
+    <string name="order_change_status_message">هل تريد تغيير حالة الطلب رقم #%1$s إلى «%2$s»؟</string>
+    <string name="order_status_changed">تم تغيير حالة الطلب #%1$s إلى «%2$s»</string>
+    <string name="order_delete_title">حذف الطلب</string>
+    <string name="order_delete_message">هل تريد حذف الطلب رقم #%1$s نهائياً؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="order_deleted">تم حذف الطلب #%1$s</string>
+
+    <!-- المستخدمون -->
+    <string name="users_title">المستخدمون</string>
+    <string name="users_subtitle">%1$s عميل · %2$s مدير</string>
+    <string name="users_search_hint">ابحث بالاسم أو البريد أو الهاتف</string>
+    <string name="users_filter_all">الكل</string>
+    <string name="users_filter_customers">العملاء</string>
+    <string name="users_filter_admins">المدراء</string>
+    <string name="users_empty">لا يوجد مستخدمون</string>
+    <string name="users_orders_count">%1$s طلب</string>
+    <string name="users_role_admin">مدير</string>
+    <string name="users_role_customer">عميل</string>
+
+    <!-- الإعدادات -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_account">الحساب</string>
+    <string name="settings_role">الصلاحية</string>
+    <string name="settings_session_expires">تنتهي الجلسة في</string>
+    <string name="settings_logout">تسجيل الخروج</string>
+    <string name="settings_logout_message">هل تريد تسجيل الخروج من لوحة الإدارة؟</string>
+    <string name="settings_server">الخادم</string>
+    <string name="settings_server_change_hint">لتغيير عنوان الخادم سجّل الخروج ثم أدخل العنوان الجديد في شاشة الدخول.</string>
+    <string name="settings_display">إعدادات العرض</string>
+    <string name="settings_currency">رمز العملة</string>
+    <string name="settings_currency_hint">يظهر بجانب الأسعار داخل التطبيق فقط</string>
+    <string name="settings_low_stock">حد المخزون المنخفض</string>
+    <string name="settings_low_stock_hint">المنتجات التي كميتها أقل من أو تساوي هذا الرقم تظهر في التنبيهات</string>
+    <string name="settings_saved">تم حفظ الإعدادات</string>
+    <string name="settings_about">حول التطبيق</string>
+    <string name="settings_version">الإصدار</string>
+    <string name="settings_compatibility">التوافق</string>
+    <string name="settings_compatibility_value">Android 7.0 وما فوق، مُحسّن لشاشات التابلت</string>
+</resources>
