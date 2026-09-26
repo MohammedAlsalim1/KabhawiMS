@@ -241,7 +241,8 @@ private fun ProductsListContent(state: ProductsUiState, vm: ProductsViewModel) {
                                 ErrorBanner(message = state.error.asString(), onRetry = vm::refresh)
                             }
                         }
-                        items(state.items, key = { it.product.barcode }) { item ->
+                        // اسم المنتج فريد في قاعدة البيانات، أما الباركود فلا يفرض الخادم تفرده
+                        items(state.items, key = { "${it.product.name}|${it.product.barcode}" }) { item ->
                             ProductCard(
                                 item = item,
                                 currency = state.currency,
