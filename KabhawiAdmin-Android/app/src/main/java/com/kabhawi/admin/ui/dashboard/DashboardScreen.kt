@@ -22,7 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.FiberNew
+import androidx.compose.material.icons.outlined.HourglassEmpty
 import androidx.compose.material.icons.outlined.Group
 import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material.icons.outlined.Inventory2
@@ -196,7 +196,7 @@ private fun statCards(
             onClick = { onNavigate(Destination.ORDERS) },
         ),
         StatCardData(
-            icon = Icons.Outlined.FiberNew,
+            icon = Icons.Outlined.HourglassEmpty,
             label = stringResource(R.string.stat_new_orders),
             value = Formatters.number(stats.count(OrderStatus.CREATED)),
             accent = ext.info,

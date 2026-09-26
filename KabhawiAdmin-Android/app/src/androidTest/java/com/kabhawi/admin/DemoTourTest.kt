@@ -2,6 +2,7 @@ package com.kabhawi.admin
 
 import android.content.Intent
 import android.os.SystemClock
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
@@ -42,6 +43,7 @@ class DemoTourTest {
 
         // ---------- تسجيل الدخول ----------
         find(By.res("login_server"))
+        Log.i(TAG, "DEMO_START")
         pause(2500)
         shot("login")
         find(By.res("login_server")).text = "http://10.0.2.2:8080"
@@ -133,24 +135,16 @@ class DemoTourTest {
         pause(3000)
         shot("settings")
 
-        // ---------- الوضع العمودي ----------
+        // ---------- العودة للرئيسية ----------
         tap(By.res("nav_DASHBOARD"))
         find(By.text("أحدث الطلبات"))
-        pause(1500)
-        device.setOrientationLeft()
         pause(3500)
-        shot("dashboard_portrait")
-        tap(By.res("nav_ORDERS"))
-        pause(3000)
-        shot("orders_portrait")
-        device.setOrientationNatural()
-        pause(2500)
-        tap(By.res("nav_DASHBOARD"))
-        pause(3000)
-        device.unfreezeRotation()
+        Log.i(TAG, "DEMO_END")
     }
 
     private fun launchApp() {
+        // كما يحدث عند فتح التطبيق باللمس: بدون تركيز تلقائي على أول حقل وظهور لوحة المفاتيح
+        instrumentation.setInTouchMode(true)
         val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
@@ -175,6 +169,10 @@ class DemoTourTest {
     private fun swipeUp() {
         val x = (device.displayWidth * 0.45).toInt()
         device.swipe(x, (device.displayHeight * 0.78).toInt(), x, (device.displayHeight * 0.30).toInt(), 60)
+    }
+
+    private companion object {
+        const val TAG = "DemoTour"
     }
 
     private fun swipeDown() {

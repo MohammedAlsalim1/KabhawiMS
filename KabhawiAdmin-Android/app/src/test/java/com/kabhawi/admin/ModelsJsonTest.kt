@@ -53,6 +53,7 @@ class ModelsJsonTest {
         val user = ApiJson.decodeFromString(ListSerializer(User.serializer()), json).single()
         assertTrue(user.isAdmin)
         assertEquals("MS", user.initials)
+        assertEquals("س\u200Cخ", User(firstName = "سارة", lastName = "خطيب").initials)
     }
 
     @Test

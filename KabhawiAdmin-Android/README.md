@@ -3,6 +3,22 @@
 تطبيق أندرويد (Kotlin + Jetpack Compose) لإدارة متجر KabhawiMS الإلكتروني عبر الـ API الخاص به،
 مصمَّم لشاشات **التابلت** ويعمل على **Android 7.0 (API 24)** وما فوق، بواجهة عربية من اليمين إلى اليسار.
 
+## لقطات من التطبيق
+
+فيديو جولة كاملة في الواجهة (مسجّل على محاكي تابلت Android 7.0 مع بيانات تجريبية):
+[docs/media/kabhawi-admin-demo.mp4](docs/media/kabhawi-admin-demo.mp4)
+
+| لوحة التحكم | الطلبات |
+|---|---|
+| ![لوحة التحكم](docs/media/02_dashboard.jpg) | ![الطلبات](docs/media/04_order_detail.jpg) |
+| **المنتجات** | **تفاصيل منتج** |
+| ![المنتجات](docs/media/07_products.jpg) | ![تفاصيل منتج](docs/media/08_product_detail.jpg) |
+| **الأقسام** | **المستخدمون** |
+| ![الأقسام](docs/media/10_categories.jpg) | ![المستخدمون](docs/media/11_users.jpg) |
+
+> البيانات والصور في اللقطات تجريبية من `demo/mock_server.py`. لإعادة التسجيل شغّل
+> workflow **Android Admin Demo Video** من تبويب Actions.
+
 ## المزايا
 
 | الشاشة | ما يمكن فعله |

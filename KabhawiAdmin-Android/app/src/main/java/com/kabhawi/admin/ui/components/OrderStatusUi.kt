@@ -3,7 +3,7 @@ package com.kabhawi.admin.ui.components
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.FiberNew
+import androidx.compose.material.icons.outlined.HourglassEmpty
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocalShipping
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +27,7 @@ val OrderStatus.labelRes: Int
 
 val OrderStatus.icon: ImageVector
     get() = when (this) {
-        OrderStatus.CREATED -> Icons.Outlined.FiberNew
+        OrderStatus.CREATED -> Icons.Outlined.HourglassEmpty
         OrderStatus.SHIPPED -> Icons.Outlined.LocalShipping
         OrderStatus.CANCELLED -> Icons.Outlined.Cancel
         OrderStatus.UNKNOWN -> Icons.Outlined.Info

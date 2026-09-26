@@ -106,11 +106,12 @@ data class User(
             .ifBlank { username }
 
     val initials: String
-        get() = fullName.split(' ')
-            .filter { it.isNotBlank() }
-            .take(2)
-            .joinToString("") { it.first().toString() }
-            .uppercase()
+        get() {
+            val letters = fullName.split(' ').filter { it.isNotBlank() }.take(2).map { it.first() }
+            // فاصل غير رابط (ZWNJ) حتى لا تتصل الحروف العربية ببعضها (مثل "لا")
+            val separator = if (letters.any { it in '\u0600'..'\u06FF' }) "\u200C" else ""
+            return letters.joinToString(separator).uppercase()
+        }
 }
 
 @Serializable
